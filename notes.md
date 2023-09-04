@@ -105,3 +105,38 @@ create manage and run containers
 * RedHat OpenShift
 * Google's Kubernetes Engine
 
+## microservices
+
+* This section discusses use cases of containers and orchestration, starting with microservices.
+* Microservices involve splitting applications into small, independent services.
+* Containers make it easier to implement and manage microservices.
+* Microservices offer benefits like rapid development, reduced risk, and technology optimization.
+* Containers are suited for managing a large number of small, independent microservices.
+* Orchestration simplifies the deployment, scaling, and connection of microservice instances.
+* Containers enable easy resource scaling for microservices, with orchestration automating the process.
+* Orchestration can automatically detect increased usage and scale microservices without manual intervention, improving end-user experience.
+* Containers and microservices provide business value by enhancing end-user experiences and reducing manual administrative work.
+
+
+```
+  ┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐
+  │   Microservice 1│─────│   Microservice 2│─────│   Microservice 3│
+  └─────────────────┘     └─────────────────┘     └─────────────────┘
+         |                       |                       |
+         ▼                       ▼                       ▼
+  ┌───────────┐           ┌───────────┐           ┌───────────┐
+  │  Database │           │  Database │           │  Database │
+  └───────────┘           └───────────┘           └───────────┘
+
+```
+or
+```
+[Microservices]
+[    App      ]
+[product data]
+[customer data]
+[authentication]
+[order history]
+```
+
+
