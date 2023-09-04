@@ -57,3 +57,51 @@
 4. Automation
 5. Efficient Resource Usage
 
+## Advantages of Containers
+* same isolation and portability of VMs
+* lightweight - less resources
+* Faster than VMs
+* smaller than VMs
+* faster and simpler automation
+
+## Limitations of Containers
+* less flex than VMs ( No windows containers on linux machines . yet)
+* new challenges with orchestrationa and automation
+
+## [Docker](docker.com)
+create manage and run containers
+
+* This section of the course covers specific container and orchestration technologies.
+* The focus of this lesson is on Docker, one of the most popular container runtimes.
+* Docker is a container runtime, which enables the implementation and running of containers.
+* Containers are a concept, and Docker is a tool that implements this concept.
+* Docker provides tools for running, building, and managing containers and container images.
+* The course does not provide technical details about using Docker but recommends exploring official Docker documentation for more information.
+* There are alternative container runtimes available besides Docker, which will be briefly mentioned in the next lesson.
+
+## other container runtimes
+* RKT "rocket" - security and composability
+* containerd "container d" - simple
+
+
+## Kubernetes
+
+* This lesson introduces Kubernetes as a container orchestration tool.
+* Kubernetes simplifies building and managing container infrastructure and automation.
+* Orchestration tools like Kubernetes automate tasks such as deploying, scaling, and managing containers.
+* Kubernetes enables self-healing applications, automated scaling, and easy automated deployments.
+* It is the industry-leading container orchestration tool, known for its extensive features and power.
+* You can explore more about Kubernetes in the official Kubernetes documentation at kubernetes.io.
+* The next lesson will discuss alternative orchestration tools to consider.
+
+## other orchestration tools
+* Docker Swarm - native to docker
+* Marathon - tons of APIs
+* nomad - simple and lightweight
+* Amazon Elastic Container Service 
+* Amazon ECS for Kubernetes
+* Azure Kubernetes Service
+* IBM Cloud Kubernetes
+* RedHat OpenShift
+* Google's Kubernetes Engine
+
