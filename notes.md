@@ -9,7 +9,7 @@ https://learn.acloud.guru/learning-path/cloud-adjacent-containers
 
 1. Containers
 * [x] Containers and Orchestration
-* [2/8] Essential Container Concepts
+* [5/8] Essential Container Concepts
 https://learn.acloud.guru/course/03155237-268d-4c80-b704-af2fbe5bdcdb/dashboard
 * [] Docker QuickStart
 * [] Kubernetes QuickStart
