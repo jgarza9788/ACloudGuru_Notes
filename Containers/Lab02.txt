@@ -1,0 +1,101 @@
+Welcome to A Cloud Guru's SSH Instant Terminal
+
+You can use this terminal to ssh to other systems.
+- Just run 'ssh USERNAME@HOSTNAME'
+
+You can add a pem key too.
+- Just run 'add_key' and follow the instructions.
+
+
+
+Advanced SSH options:
+
+Dropbear SSH client v2020.81 https://matt.ucc.asn.au/dropbear/dropbear.html
+Usage: ssh [options] [user@]host[/port] [command]
+-p <remoteport>
+-l <username>
+-t    Allocate a pty
+-T    Don't allocate a pty
+-N    Don't run a remote command
+-f    Run in background after auth
+-y    Always accept remote host key if unknown
+-y -y Don't perform any remote host key checking (caution)
+-s    Request a subsystem (use by external sftp)
+-o option     Set option in OpenSSH-like format ('-o help' to list options)
+-i <identityfile>   (multiple allowed, default .ssh/id_dropbear)
+-A    Enable agent auth forwarding
+-W <receive_window_buffer> (default 24576, larger may be faster, max 1MB)
+-K <keepalive>  (0 is never, default 0)
+-I <idle_timeout>  (0 is never, default 0)
+-c <cipher list> Specify preferred ciphers ('-c help' to list options)
+-m <MAC list> Specify preferred MACs for packet verification (or '-m help')
+-b    [bind_address][:bind_port]
+-V    Version
+/ $ ssh cloud_user@54.162.161.52
+
+Host '54.162.161.52' is not in the trusted hosts file.
+(ssh-ed25519 fingerprint sha1!! ce:72:d3:f9:34:f6:ed:49:2c:86:a2:3b:72:a6:09:05:bf:69:13:35)
+Do you want to continue connecting? (y/n) y
+cloud_user@54.162.161.52's password:
+Welcome to Ubuntu 16.04.7 LTS (GNU/Linux 4.4.0-1128-aws x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+  Get cloud support with Ubuntu Advantage Cloud Guest:
+    http://www.ubuntu.com/business/services/cloud
+
+Expanded Security Maintenance for Infrastructure is not enabled.
+
+2 updates can be applied immediately.
+To see these additional updates run: apt list --upgradable
+
+207 additional security updates can be applied with ESM Infra.
+Learn more about enabling ESM Infra service for Ubuntu 16.04 at
+https://ubuntu.com/16-04
+
+
+cloud_user@ip-10-0-1-23:~$ cat /etc/issue
+Ubuntu 16.04.7 LTS \n \l
+
+cloud_user@ip-10-0-1-23:~$ sudo apt install lxd lxd-client
+[sudo] password for cloud_user:
+Sorry, try again.
+[sudo] password for cloud_user:
+Reading package lists... Done
+Building dependency tree
+Reading state information... Done
+lxd is already the newest version (2.0.11-0ubuntu1~16.04.4).
+lxd-client is already the newest version (2.0.11-0ubuntu1~16.04.4).
+0 upgraded, 0 newly installed, 0 to remove and 2 not upgraded.
+cloud_user@ip-10-0-1-23:~$ sudo lxd init
+Do you want to configure a new storage pool (yes/no) [default=yes]? y
+Name of the storage backend to use (dir or zfs) [default=dir]: dir
+Would you like LXD to be available over the network (yes/no) [default=no]? n
+Do you want to configure the LXD bridge (yes/no) [default=yes]? y
+Warning: Stopping lxd.service, but it can still be activated by:
+  lxd.socket
+LXD has been successfully configured.
+cloud_user@ip-10-0-1-23:~$ sudo lxc launch images:alpine/3.18 my-alpine
+Generating a client certificate. This may take a minute...
+If this is your first time using LXD, you should also run: sudo lxd init
+To start your first container, try: lxc launch ubuntu:16.04
+
+Creating my-alpine
+Starting my-alpine
+cloud_user@ip-10-0-1-23:~$ sudo lxc list
++-----------+---------+----------------------+-----------------------------------------------+------------+-----------+
+|   NAME    |  STATE  |         IPV4         |                     IPV6                      |    TYPE    | SNAPSHOTS |
++-----------+---------+----------------------+-----------------------------------------------+------------+-----------+
+| my-alpine | RUNNING | 10.83.223.197 (eth0) | fd8e:91e1:cd26:1738:216:3eff:fe35:5d4e (eth0) | PERSISTENT | 0         |
++-----------+---------+----------------------+-----------------------------------------------+------------+-----------+
+cloud_user@ip-10-0-1-23:~$ sudo lxc exec my-alpine -- /bin/ash
+~ # echo hello world! > hello.txt
+~ # cat hello.txt
+hello world!
+~ # exit
+cloud_user@ip-10-0-1-23:~$ ls
+cloud_user@ip-10-0-1-23:~$ ls /home
+cloud_user  ssm-user  ubuntu
+cloud_user@ip-10-0-1-23:~$

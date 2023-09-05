@@ -1,0 +1,522 @@
+ Welcome to A Cloud Guru's SSH Instant Terminal
+
+You can use this terminal to ssh to other systems.
+- Just run 'ssh USERNAME@HOSTNAME'
+
+You can add a pem key too.
+- Just run 'add_key' and follow the instructions.
+
+
+
+Advanced SSH options:
+
+Dropbear SSH client v2020.81 https://matt.ucc.asn.au/dropbear/dropbear.html
+Usage: ssh [options] [user@]host[/port] [command]
+-p <remoteport>
+-l <username>
+-t    Allocate a pty
+-T    Don't allocate a pty
+-N    Don't run a remote command
+-f    Run in background after auth
+-y    Always accept remote host key if unknown
+-y -y Don't perform any remote host key checking (caution)
+-s    Request a subsystem (use by external sftp)
+-o option     Set option in OpenSSH-like format ('-o help' to list options)
+-i <identityfile>   (multiple allowed, default .ssh/id_dropbear)
+-A    Enable agent auth forwarding
+-W <receive_window_buffer> (default 24576, larger may be faster, max 1MB)
+-K <keepalive>  (0 is never, default 0)
+-I <idle_timeout>  (0 is never, default 0)
+-c <cipher list> Specify preferred ciphers ('-c help' to list options)
+-m <MAC list> Specify preferred MACs for packet verification (or '-m help')
+-b    [bind_address][:bind_port]
+-V    Version
+/ $ ssh cloud_user@52.91.74.24
+
+Host '52.91.74.24' is not in the trusted hosts file.
+(ssh-ed25519 fingerprint sha1!! 07:72:21:7d:f0:1d:fd:60:a9:6a:36:37:8c:af:a2:ba:85:35:8b:85)
+Do you want to continue connecting? (y/n) y
+cloud_user@52.91.74.24's password:
+cloud_user@52.91.74.24's password:
+[cloud_user@ip-10-0-1-100 ~]$ whoami
+cloud_user
+[cloud_user@ip-10-0-1-100 ~]$ dir
+gpus.csv  init_pass  intel-cpus.csv
+[cloud_user@ip-10-0-1-100 ~]$ mkdir /home/elba
+mkdir: cannot create directory ‘/home/elba’: Permission denied
+[cloud_user@ip-10-0-1-100 ~]$ dir
+gpus.csv  init_pass  intel-cpus.csv
+[cloud_user@ip-10-0-1-100 ~]$ sudo mkdir /home/elba
+[sudo] password for cloud_user:
+Sorry, try again.
+[sudo] password for cloud_user:
+[cloud_user@ip-10-0-1-100 ~]$ ls
+gpus.csv  init_pass  intel-cpus.csv
+[cloud_user@ip-10-0-1-100 ~]$ sudo mkdir /home/elba
+mkdir: cannot create directory ‘/home/elba’: File exists
+[cloud_user@ip-10-0-1-100 ~]$ ls
+gpus.csv  init_pass  intel-cpus.csv
+[cloud_user@ip-10-0-1-100 ~]$ dir
+gpus.csv  init_pass  intel-cpus.csv
+[cloud_user@ip-10-0-1-100 ~]$ sudo dir
+gpus.csv  init_pass  intel-cpus.csv
+[cloud_user@ip-10-0-1-100 ~]$ cd home
+-bash: cd: home: No such file or directory
+[cloud_user@ip-10-0-1-100 ~]$ ls /home
+cloud_user  elba  ssm-user
+[cloud_user@ip-10-0-1-100 ~]$ useradd napoleon
+useradd: Permission denied.
+useradd: cannot lock /etc/passwd; try again later.
+[cloud_user@ip-10-0-1-100 ~]$ sudo useradd napoleon
+[cloud_user@ip-10-0-1-100 ~]$ ls
+gpus.csv  init_pass  intel-cpus.csv
+[cloud_user@ip-10-0-1-100 ~]$ dir
+gpus.csv  init_pass  intel-cpus.csv
+[cloud_user@ip-10-0-1-100 ~]$ sudo mkdir /home/elba/{bin,lib64}
+[cloud_user@ip-10-0-1-100 ~]$ ls /home/elba
+bin  lib64
+[cloud_user@ip-10-0-1-100 ~]$ ^C
+[cloud_user@ip-10-0-1-100 ~]$ sudo cp /binbash /home/bla/bin/bash
+cp: cannot stat ‘/binbash’: No such file or directory
+[cloud_user@ip-10-0-1-100 ~]$ sudo cp /bin/bash /home/bla/bin/bash
+cp: cannot create regular file ‘/home/bla/bin/bash’: No such file or directory
+[cloud_user@ip-10-0-1-100 ~]$ sudo cp /bin/bash /home/ebla/bin/bash
+cp: cannot create regular file ‘/home/ebla/bin/bash’: No such file or directory
+[cloud_user@ip-10-0-1-100 ~]$ mkdir /home/elba/bin/bash
+mkdir: cannot create directory ‘/home/elba/bin/bash’: Permission denied
+[cloud_user@ip-10-0-1-100 ~]$ sudo mkdir /home/elba/bin/bash
+[cloud_user@ip-10-0-1-100 ~]$ sudo cp /bin/bash /home/ebla/bin/bash
+cp: cannot create regular file ‘/home/ebla/bin/bash’: No such file or directory
+[cloud_user@ip-10-0-1-100 ~]$ ls /home/elba/bin
+bash
+[cloud_user@ip-10-0-1-100 ~]$ ls *
+gpus.csv  init_pass  intel-cpus.csv
+[cloud_user@ip-10-0-1-100 ~]$ ls /bin
+[                                   debuginfo-install      grub2-syslinux2cfg    mkfifo                page_owner_sort           sedismod                        tload
+a2p                                 delv                   gsettings             mkinitrd              passwd                    sedispol                        tmon
+addr2line                           df                     gsoelim               mknod                 paste                     semodule_package                toe
+alias                               dgawk                  gtar                  mktemp                pathchk                   seq                             top
+amazon-ssm-agent                    diff                   gtbl                  modutil               pchrt                     setarch                         touch
+apropos                             diff3                  gtroff                more                  perl                      setfacl                         tput
+ar                                  dig                    gunzip                mount                 perl5.16.3                setfont                         tr
+arch                                dir                    gzexe                 mountpoint            perlbug                   setkeycodes                     tracepath
+as                                  dircolors              gzip                  msgattrib             perldoc                   setleds                         tracepath6
+aserver                             dirname                h2ph                  msgcat                perlthanks                setmetamode                     troff
+audit2allow                         dmesg                  hdsploader            msgcmp                pflags                    setpriv                         true
+audit2why                           dnsdomainname          head                  msgcomm               pgawk                     setsid                          truncate
+aulast                              domainname             hexdump               msgconv               pgrep                     setterm                         trust
+aulastlog                           dracut                 host                  msgen                 pic                       setup-nsssysinit                tset
+ausyscall                           du                     hostid                msgexec               piconv                    setup-nsssysinit.sh             tsort
+auvirt                              dumpkeys               hostname              msgfilter             pinentry                  setvtrgb                        tty
+awk                                 dwp                    hostnamectl           msgfmt                pinentry-curses           sftp                            turbostat
+base64                              easy_install           i386                  msggrep               ping                      sg                              tzselect
+basename                            easy_install-2.7       iconv                 msghack               ping6                     sh                              udevadm
+bash                                echo                   id                    msginit               pinky                     sha1sum                         ul
+bashbug                             egrep                  idiag-socket-details  msgmerge              pk12util                  sha224sum                       umask
+bashbug-64                          eject                  idn                   msgunfmt              pkaction                  sha256sum                       umount
+bc                                  elfedit                igawk                 msguniq               pkcheck                   sha384sum                       unalias
+bg                                  env                    info                  mv                    pkexec                    sha512sum                       uname
+bond2team                           envsubst               infocmp               namei                 pkg-config                show-changed-rco                unexpand
+bootctl                             eqn                    infokey               ndptool               pkill                     showconsolefont                 unicode_start
+busctl                              ex                     infotocap             needs-restarting      pkla-admin-identities     show-installed                  unicode_stop
+c2ph                                expand                 install               neqn                  pkla-check-authorization  showkey                         uniq
+cal                                 expr                   ionice                netstat               pkttyagent                shred                           unlink
+ca-legacy                           factor                 ipcalc                newaliases            pl2pm                     shuf                            unlz4
+captoinfo                           fallocate              ipcmk                 newaliases.postfix    pldd                      signver                         unshare
+cat                                 false                  ipcrm                 newgidmap             plymouth                  size                            unxz
+catchsegv                           fc                     ipcs                  newgrp                pmap                      skill                           update-ca-trust
+catman                              fg                     iptables-xml          newuidmap             pod2html                  slabinfo                        update-mime-database
+cd                                  fgconsole              isosize               nf-ct-add             pod2man                   slabtop                         uptime
+centrino-decode                     fgrep                  jobs                  nf-ct-list            pod2text                  sleep                           urlgrabber
+certutil                            file                   join                  nf-exp-add            pod2usage                 slogin                          users
+c++filt                             find                   journalctl            nf-exp-delete         post-grohtml              snice                           usleep
+chacl                               find2perl              jsonpointer           nf-exp-list           powernow-k8-decode        soelim                          usx2yloader
+chage                               findmnt                kbdinfo               nf-log                pr                        sort                            utmpdump
+chardetect                          find-repos-of-install  kbd_mode              nf-monitor            preconv                   sotruss                         uuidgen
+chattr                              fipscheck              kbdrate               nf-queue              pre-grohtml               splain                          vdir
+chcat                               fipshmac               kdumpctl              ngettext              printenv                  split                           verifytree
+chcon                               firewall-cmd           kernel-install        nice                  printf                    sprof                           vi
+checkmodule                         firewall-offline-cmd   kill                  nisdomainname         prlimit                   sqlite3                         view
+checkpolicy                         flock                  kmod                  nl                    ps                        ssh                             vim
+chfn                                fmt                    last                  nl-addr-add           psed                      ssh-add                         vimdiff
+chgrp                               fold                   lastb                 nl-addr-delete        psfaddtable               ssh-agent                       vimtutor
+chmem                               free                   lastlog               nl-addr-list          psfgettable               ssh-copy-id                     vlock
+chmod                               gapplication           lchfn                 nl-class-add          psfstriptable             ssh-keygen                      vmstat
+chown                               gawk                   lchsh                 nl-class-delete       psfxtable                 ssh-keyscan                     vxloader
+chronyc                             gdbus                  ld                    nl-classid-lookup     pstruct                   ssltap                          w
+chrt                                gencat                 ld.bfd                nl-class-list         ptaskset                  ssm-agent-worker                wait
+chsh                                genl-ctrl-list         ldd                   nl-cls-add            ptx                       ssm-cli                         wall
+chvt                                geoiplookup            ld.gold               nl-cls-delete         pwd                       ssm-document-worker             watch
+cksum                               geoiplookup6           less                  nl-cls-list           pwdx                      ssm-session-logger              watchgnupg
+clear                               geoipupdate            lessecho              nl-fib-lookup         pwmake                    ssm-session-worker              wc
+cloud-id                            geqn                   lesskey               nl-link-enslave       pwscore                   stat                            wdctl
+cloud-init                          getconf                lesspipe.sh           nl-link-ifindex2name  pydoc                     stdbuf                          whatis
+cloud-init-per                      getent                 lexgrog               nl-link-list          python                    strings                         whereis
+cmp                                 getfacl                link                  nl-link-name2ifindex  python2                   strip                           which
+cmsutil                             getkeycodes            linux32               nl-link-release       python2.7                 stty                            whiptail
+col                                 getopt                 linux64               nl-link-set           ranlib                    su                              who
+colcrt                              getopts                linux-boot-prober     nl-link-stats         raw                       sudo                            whoami
+colrm                               gettext                ln                    nl-list-caches        read                      sudoedit                        write
+column                              gettext.sh             loadkeys              nl-list-sockets       readelf                   sudoreplay                      x86_64
+comm                                gio                    loadunimap            nl-monitor            readlink                  sum                             x86_energy_perf_policy
+command                             gio-querymodules-64    locale                nl-neigh-add          realpath                  sync                            xargs
+coredumpctl                         glib-compile-schemas   localectl             nl-neigh-delete       recode-sr-latin           systemctl                       xgettext
+cp                                  gmake                  localedef             nl-neigh-list         rename                    systemd-analyze                 xmlcatalog
+cpio                                gneqn                  logger                nl-neightbl-list      renice                    systemd-ask-password            xmllint
+cpupower                            gnroff                 login                 nl-pktloc-lookup      repoclosure               systemd-cat                     xmlwf
+crlutil                             gpasswd                loginctl              nl-qdisc-add          repodiff                  systemd-cgls                    xxd
+crontab                             gpg                    logname               nl-qdisc-delete       repo-graph                systemd-cgtop                   xz
+csplit                              gpg2                   look                  nl-qdisc-list         repomanage                systemd-coredumpctl             xzcat
+csslint-0.6                         gpg-agent              ls                    nl-route-add          repoquery                 systemd-delta                   xzcmp
+curl                                gpgconf                lsattr                nl-route-delete       repo-rss                  systemd-detect-virt             xzdec
+cut                                 gpg-connect-agent      lsblk                 nl-route-get          reposync                  systemd-escape                  xzdiff
+cvtsudoers                          gpg-error              lscpu                 nl-route-list         repotrack                 systemd-firstboot               xzegrep
+date                                gpgparsemail           lsinitrd              nl-rule-list          reset                     systemd-hwdb                    xzfgrep
+db_archive                          gpgsplit               lsipc                 nl-tctree-list        resizecons                systemd-inhibit                 xzgrep
+db_checkpoint                       gpgv                   lslocks               nl-util-addr          rev                       systemd-loginctl                xzless
+db_deadlock                         gpgv2                  lslogins              nm                    rm                        systemd-machine-id-setup        xzmore
+db_dump                             gpg-zip                lsmem                 nmcli                 rmail                     systemd-notify                  yes
+db_dump185                          gpic                   lsns                  nm-online             rmail.postfix             systemd-nspawn                  ypdomainname
+db_hotbackup                        gprof                  lsscsi                nmtui                 rmdir                     systemd-path                    yum
+db_load                             grep                   lua                   nmtui-connect         rpcgen                    systemd-run                     yum-builddep
+db_log_verify                       groff                  luac                  nmtui-edit            rpm                       systemd-stdio-bridge            yum-config-manager
+db_printlog                         grops                  lz4                   nmtui-hostname        rpm2cpio                  systemd-sysv-convert            yum-debug-dump
+db_recover                          grotty                 lz4c                  nohup                 rpmdb                     systemd-tmpfiles                yum-debug-restore
+db_replicate                        groups                 lz4cat                nproc                 rpmkeys                   systemd-tty-ask-password-agent  yumdownloader
+db_stat                             grub2-editenv          machinectl            nroff                 rpmquery                  tabs                            yum-groups-manager
+db_tuner                            grub2-file             mailq                 nsenter               rpmverify                 tac                             zcat
+db_upgrade                          grub2-fstest           mailq.postfix         nslookup              rsyslog-recover-qi.pl     tail                            zcmp
+dbus-binding-tool                   grub2-glue-efi         make                  nss-policy-check      runcon                    tailf                           zdiff
+dbus-cleanup-sockets                grub2-kbdcomp          makedb                nsupdate              run-parts                 tar                             zegrep
+dbus-daemon                         grub2-menulst2cfg      man                   numfmt                rvi                       taskset                         zfgrep
+dbus-monitor                        grub2-mkfont           mandb                 objcopy               rview                     tbl                             zforce
+dbus-run-session                    grub2-mkimage          manpath               objdump               rvim                      teamd                           zgrep
+dbus-send                           grub2-mklayout         mapscrn               od                    s2p                       teamdctl                        zless
+dbus-test-tool                      grub2-mknetdir         mcookie               oldfind               sandbox                   teamnl                          zmore
+dbus-update-activation-environment  grub2-mkpasswd-pbkdf2  md5sum                open                  scp                       tee                             znew
+dbus-uuidgen                        grub2-mkrelpath        mdig                  openssl               script                    test                            zsoelim
+db_verify                           grub2-mkrescue         mesg                  openvt                scriptreplay              testgdbm
+dc                                  grub2-mkstandalone     miniterm.py           os-prober             sdiff                     tic
+dd                                  grub2-render-label     mixartloader          p11-kit               secon                     timedatectl
+deallocvt                           grub2-script-check     mkdir                 package-cleanup       sed                       timeout
+[cloud_user@ip-10-0-1-100 ~]$ ls /bin/bash
+/bin/bash
+[cloud_user@ip-10-0-1-100 ~]$ cd /bin/bash
+-bash: cd: /bin/bash: Not a directory
+[cloud_user@ip-10-0-1-100 ~]$ sudo cp /bin/bash /home/ebla/bin/bash
+cp: cannot create regular file ‘/home/ebla/bin/bash’: No such file or directory
+[cloud_user@ip-10-0-1-100 ~]$ sudo cp /bin/bash /home/elba/bin/bash
+[cloud_user@ip-10-0-1-100 ~]$ sudo cp /bin/ls /home/elba/bin/ls
+[cloud_user@ip-10-0-1-100 ~]$ sudo cp /bin/cat /home/elba/bin/cat
+[cloud_user@ip-10-0-1-100 ~]$ ldd /bin/bash /bin/ls /bin/cat
+/bin/bash:
+        linux-vdso.so.1 =>  (0x00007fff015a0000)
+        libtinfo.so.5 => /lib64/libtinfo.so.5 (0x00007f0b95588000)
+        libdl.so.2 => /lib64/libdl.so.2 (0x00007f0b95384000)
+        libc.so.6 => /lib64/libc.so.6 (0x00007f0b94fb6000)
+        /lib64/ld-linux-x86-64.so.2 (0x00007f0b957b2000)
+/bin/ls:
+        linux-vdso.so.1 =>  (0x00007fff261fc000)
+        libselinux.so.1 => /lib64/libselinux.so.1 (0x00007f0743d1f000)
+        libcap.so.2 => /lib64/libcap.so.2 (0x00007f0743b1a000)
+        libacl.so.1 => /lib64/libacl.so.1 (0x00007f0743911000)
+        libc.so.6 => /lib64/libc.so.6 (0x00007f0743543000)
+        libpcre.so.1 => /lib64/libpcre.so.1 (0x00007f07432e1000)
+        libdl.so.2 => /lib64/libdl.so.2 (0x00007f07430dd000)
+        /lib64/ld-linux-x86-64.so.2 (0x00007f0743f46000)
+        libattr.so.1 => /lib64/libattr.so.1 (0x00007f0742ed8000)
+        libpthread.so.0 => /lib64/libpthread.so.0 (0x00007f0742cbc000)
+/bin/cat:
+        linux-vdso.so.1 =>  (0x00007ffe517df000)
+        libc.so.6 => /lib64/libc.so.6 (0x00007f4e93381000)
+        /lib64/ld-linux-x86-64.so.2 (0x00007f4e9374f000)
+[cloud_user@ip-10-0-1-100 ~]$ ^C
+[cloud_user@ip-10-0-1-100 ~]$ sudo cp /lib64/libtinfo.so.5 /home/elba/lib64
+[sudo] password for cloud_user:
+Sorry, try again.
+[sudo] password for cloud_user:
+[cloud_user@ip-10-0-1-100 ~]$ sudo cp /lib64/libtinfo.so.5 /home/elba/lib64
+[cloud_user@ip-10-0-1-100 ~]$ sudo cp /lib64/libdl.so.2 /home/elba/lib64
+[cloud_user@ip-10-0-1-100 ~]$ sudo cp /lib64/libc.so.6 /home/elba/lib64
+[cloud_user@ip-10-0-1-100 ~]$ sudo cp /lib64/ld-linux-x86-64.so.2 /home/elba/lib64
+[cloud_user@ip-10-0-1-100 ~]$ sudo cp /lib64/libselinux.so.1 /home/elba/lib64
+[cloud_user@ip-10-0-1-100 ~]$ sudo cp /lib64/libcap.so.2  /home/elba/lib64
+[cloud_user@ip-10-0-1-100 ~]$ sudo cp /lib64/libacl.so.1  /home/elba/lib64
+[cloud_user@ip-10-0-1-100 ~]$ sudo cp /lib64/libc.so.6  /home/elba/lib64
+[cloud_user@ip-10-0-1-100 ~]$ sudo cp /lib64/libpcre.so.1  /home/elba/lib64
+[cloud_user@ip-10-0-1-100 ~]$ sudo cp /lib64/libdl.so.2  /home/elba/lib64
+[cloud_user@ip-10-0-1-100 ~]$ sudo cp /lib64/ld-linux-x86-64.so.2  /home/elba/lib64
+[cloud_user@ip-10-0-1-100 ~]$ sudo cp /lib64/libattr.so.1  /home/elba/lib64
+[cloud_user@ip-10-0-1-100 ~]$ sudo cp /lib64/libpthread.so.0  /home/elba/lib64
+[cloud_user@ip-10-0-1-100 ~]$ sudo cp /lib64/libc.so.6  /home/elba/lib64
+[cloud_user@ip-10-0-1-100 ~]$ sudo cp /lib64/ld-linux-x86-64.so.2  /home/elba/lib64
+[cloud_user@ip-10-0-1-100 ~]$ ls home/elba/lib64
+ls: cannot access home/elba/lib64: No such file or directory
+[cloud_user@ip-10-0-1-100 ~]$ ls /home/elba/lib64
+ld-linux-x86-64.so.2  libacl.so.1  libattr.so.1  libcap.so.2  libc.so.6  libdl.so.2  libpcre.so.1  libpthread.so.0  libselinux.so.1  libtinfo.so.5
+[cloud_user@ip-10-0-1-100 ~]$ vim /home/elba/waterloo.txt
+[cloud_user@ip-10-0-1-100 ~]$ vim /home/elba/waterloo.txt
+[cloud_user@ip-10-0-1-100 ~]$ vim /home/elba/waterloo.txt
+[cloud_user@ip-10-0-1-100 ~]$ sudo vim /home/elba/waterloo.txt
+[sudo] password for cloud_user:
+[cloud_user@ip-10-0-1-100 ~]$ sudo chroot /home/elba /bin/bash
+chroot: failed to run command ‘/bin/bash’: Permission denied
+[cloud_user@ip-10-0-1-100 ~]$ chroot /home/elba /bin/bash
+chroot: cannot change root directory to /home/elba: Operation not permitted
+[cloud_user@ip-10-0-1-100 ~]$ sudo chroot /home/elba
+chroot: failed to run command ‘/bin/bash’: Permission denied
+[cloud_user@ip-10-0-1-100 ~]$ chroot /home/elba /bin/bash
+chroot: cannot change root directory to /home/elba: Operation not permitted
+[cloud_user@ip-10-0-1-100 ~]$ ls /
+bin  boot  dev  etc  home  lib  lib64  media  mnt  opt  proc  root  run  sbin  srv  sys  tmp  usr  var
+[cloud_user@ip-10-0-1-100 ~]$ pwd
+/home/cloud_user
+[cloud_user@ip-10-0-1-100 ~]$ ls /home/
+cloud_user  elba  napoleon  ssm-user
+[cloud_user@ip-10-0-1-100 ~]$ ls /home/elba
+bin  lib64  waterloo.txt
+[cloud_user@ip-10-0-1-100 ~]$ sudo chroot /home/elba
+chroot: failed to run command ‘/bin/bash’: Permission denied
+[cloud_user@ip-10-0-1-100 ~]$ whoami
+cloud_user
+[cloud_user@ip-10-0-1-100 ~]$ sudo su -
+[root@ip-10-0-1-100 ~]# ls /
+bin  boot  dev  etc  home  lib  lib64  media  mnt  opt  proc  root  run  sbin  srv  sys  tmp  usr  var
+[root@ip-10-0-1-100 ~]# whoami
+root
+[root@ip-10-0-1-100 ~]# ls /home/
+cloud_user  elba  napoleon  ssm-user
+[root@ip-10-0-1-100 ~]# chroot /home/elba /bin/bash
+chroot: failed to run command ‘/bin/bash’: Permission denied
+[root@ip-10-0-1-100 ~]# sudo chroot /home/elba /bin/bash
+chroot: failed to run command ‘/bin/bash’: Permission denied
+[root@ip-10-0-1-100 ~]# ls /home/elba
+bin  lib64  waterloo.txt
+[root@ip-10-0-1-100 ~]# chroot /home/elba /bin/bash
+chroot: failed to run command ‘/bin/bash’: Permission denied
+[root@ip-10-0-1-100 ~]# ls
+anaconda-ks.cfg
+[root@ip-10-0-1-100 ~]# ls /
+bin  boot  dev  etc  home  lib  lib64  media  mnt  opt  proc  root  run  sbin  srv  sys  tmp  usr  var
+[root@ip-10-0-1-100 ~]# ls home
+ls: cannot access home: No such file or directory
+[root@ip-10-0-1-100 ~]# ls /home/
+cloud_user  elba  napoleon  ssm-user
+[root@ip-10-0-1-100 ~]# ls /home/elba
+bin  lib64  waterloo.txt
+[root@ip-10-0-1-100 ~]# chroot /home/elba
+chroot: failed to run command ‘/bin/bash’: Permission denied
+[root@ip-10-0-1-100 ~]# bash
+[root@ip-10-0-1-100 ~]#
+[root@ip-10-0-1-100 ~]#
+[root@ip-10-0-1-100 ~]#
+[root@ip-10-0-1-100 ~]#
+[root@ip-10-0-1-100 ~]#
+[root@ip-10-0-1-100 ~]# chroot /home/elba
+chroot: failed to run command ‘/bin/bash’: Permission denied
+[root@ip-10-0-1-100 ~]# sudo chroot /home/elba /bin/bash
+chroot: failed to run command ‘/bin/bash’: Permission denied
+[root@ip-10-0-1-100 ~]# exit
+exit
+[root@ip-10-0-1-100 ~]# chroot /home/elba
+chroot: failed to run command ‘/bin/bash’: Permission denied
+[root@ip-10-0-1-100 ~]# sudo chroot /home/elba /bin/bash
+chroot: failed to run command ‘/bin/bash’: Permission denied
+[root@ip-10-0-1-100 ~]# sudo su -
+Last login: Mon Sep  4 21:04:13 EDT 2023 on pts/0
+[root@ip-10-0-1-100 ~]# chroot /home/elba /bin/bash
+chroot: failed to run command ‘/bin/bash’: Permission denied
+[root@ip-10-0-1-100 ~]# sudo chown -R root:root /home/elba
+[root@ip-10-0-1-100 ~]# sudo chroot /home/elba /bin/bash
+chroot: failed to run command ‘/bin/bash’: Permission denied
+[root@ip-10-0-1-100 ~]# ldd /bin/bash /bin/ls /bin/cat
+/bin/bash:
+        linux-vdso.so.1 =>  (0x00007ffde65ae000)
+        libtinfo.so.5 => /lib64/libtinfo.so.5 (0x00007fdb5e2e4000)
+        libdl.so.2 => /lib64/libdl.so.2 (0x00007fdb5e0e0000)
+        libc.so.6 => /lib64/libc.so.6 (0x00007fdb5dd12000)
+        /lib64/ld-linux-x86-64.so.2 (0x00007fdb5e50e000)
+/bin/ls:
+        linux-vdso.so.1 =>  (0x00007ffff03bf000)
+        libselinux.so.1 => /lib64/libselinux.so.1 (0x00007f7a25662000)
+        libcap.so.2 => /lib64/libcap.so.2 (0x00007f7a2545d000)
+        libacl.so.1 => /lib64/libacl.so.1 (0x00007f7a25254000)
+        libc.so.6 => /lib64/libc.so.6 (0x00007f7a24e86000)
+        libpcre.so.1 => /lib64/libpcre.so.1 (0x00007f7a24c24000)
+        libdl.so.2 => /lib64/libdl.so.2 (0x00007f7a24a20000)
+        /lib64/ld-linux-x86-64.so.2 (0x00007f7a25889000)
+        libattr.so.1 => /lib64/libattr.so.1 (0x00007f7a2481b000)
+        libpthread.so.0 => /lib64/libpthread.so.0 (0x00007f7a245ff000)
+/bin/cat:
+        linux-vdso.so.1 =>  (0x00007fff9b5b2000)
+        libc.so.6 => /lib64/libc.so.6 (0x00007fa4239cb000)
+        /lib64/ld-linux-x86-64.so.2 (0x00007fa423d99000)
+[root@ip-10-0-1-100 ~]# cp /lib64/libtinfo.so.5 \
+> /lib64/libdl.so.2 \
+> /lib64/ld-linux-x86-64.so.2 \
+> /lib64/libselinux.so.1 \
+> /lib64/librt.so.1 \
+> /lib64/libcap.so.2 \
+> /lib64/libacl.so.1 \
+> /lib64/libc.so.6 \
+> /lib64/libpthread.so.0 \
+> /lib64/libattr.so.1 \
+> /lib64/libpcre.so.1 /home/elba/lib64
+cp: overwrite ‘/home/elba/lib64/libtinfo.so.5’? y
+cp: overwrite ‘/home/elba/lib64/libdl.so.2’? y
+cp: overwrite ‘/home/elba/lib64/ld-linux-x86-64.so.2’? y
+cp: overwrite ‘/home/elba/lib64/libselinux.so.1’? y
+cp: overwrite ‘/home/elba/lib64/libcap.so.2’? y
+cp: overwrite ‘/home/elba/lib64/libacl.so.1’? y
+cp: overwrite ‘/home/elba/lib64/libc.so.6’? y
+cp: overwrite ‘/home/elba/lib64/libpthread.so.0’? y
+cp: overwrite ‘/home/elba/lib64/libattr.so.1’? y
+cp: overwrite ‘/home/elba/lib64/libpcre.so.1’? y
+[root@ip-10-0-1-100 ~]# y
+-bash: y: command not found
+[root@ip-10-0-1-100 ~]# y
+-bash: y: command not found
+[root@ip-10-0-1-100 ~]# y
+-bash: y: command not found
+[root@ip-10-0-1-100 ~]# sudo chroot /home/elba /bin/bashchroot: failed to run command ‘/bin/bash’: Permission denied
+[root@ip-10-0-1-100 ~]# chroot /home/elba /bin/bash
+chroot: failed to run command ‘/bin/bash’: Permission denied
+[root@ip-10-0-1-100 ~]# ^C
+[root@ip-10-0-1-100 ~]# rm /home/elba
+rm: cannot remove ‘/home/elba’: Is a directory
+[root@ip-10-0-1-100 ~]# rm /home/elba/*
+rm: cannot remove ‘/home/elba/bin’: Is a directory
+rm: cannot remove ‘/home/elba/lib64’: Is a directory
+rm: remove regular file ‘/home/elba/waterloo.txt’? y
+[root@ip-10-0-1-100 ~]# ls /home/elba
+bin  lib64
+[root@ip-10-0-1-100 ~]# rmdir /home/elba/bin
+rmdir: failed to remove ‘/home/elba/bin’: Directory not empty
+[root@ip-10-0-1-100 ~]# rm /home/elba/bin/*
+rm: cannot remove ‘/home/elba/bin/bash’: Is a directory
+rm: remove regular file ‘/home/elba/bin/cat’? y
+rm: remove regular file ‘/home/elba/bin/ls’? y
+[root@ip-10-0-1-100 ~]# y
+-bash: y: command not found
+[root@ip-10-0-1-100 ~]# rm /home/elba/lib64/*
+rm: remove regular file ‘/home/elba/lib64/ld-linux-x86-64.so.2’?
+rm: remove regular file ‘/home/elba/lib64/libacl.so.1’?
+rm: remove regular file ‘/home/elba/lib64/libattr.so.1’?
+rm: remove regular file ‘/home/elba/lib64/libcap.so.2’?
+rm: remove regular file ‘/home/elba/lib64/libc.so.6’?
+rm: remove regular file ‘/home/elba/lib64/libdl.so.2’?
+rm: remove regular file ‘/home/elba/lib64/libpcre.so.1’?
+rm: remove regular file ‘/home/elba/lib64/libpthread.so.0’?
+rm: remove regular file ‘/home/elba/lib64/librt.so.1’?
+rm: remove regular file ‘/home/elba/lib64/libselinux.so.1’?
+rm: remove regular file ‘/home/elba/lib64/libtinfo.so.5’?
+[root@ip-10-0-1-100 ~]# ls /home/elba
+bin  lib64
+[root@ip-10-0-1-100 ~]# rm /home/elba/bin
+rm: cannot remove ‘/home/elba/bin’: Is a directory
+[root@ip-10-0-1-100 ~]# rmdir /home/elba/bin
+rmdir: failed to remove ‘/home/elba/bin’: Directory not empty
+[root@ip-10-0-1-100 ~]# rm /home/elba/bin/*
+rm: cannot remove ‘/home/elba/bin/bash’: Is a directory
+[root@ip-10-0-1-100 ~]# rm /home/elba/bin/bash/*
+rm: remove regular file ‘/home/elba/bin/bash/bash’? y
+[root@ip-10-0-1-100 ~]# rmdir /home/elba/bin
+rmdir: failed to remove ‘/home/elba/bin’: Directory not empty
+[root@ip-10-0-1-100 ~]# ls /home/elba/bin
+bash
+[root@ip-10-0-1-100 ~]# ls /home/elba/bin/bash
+[root@ip-10-0-1-100 ~]# rmdir /home/elba/bin/bash
+[root@ip-10-0-1-100 ~]# rmdir /home/elba/bin/
+[root@ip-10-0-1-100 ~]# rmdir /home/elba/bin
+rmdir: failed to remove ‘/home/elba/bin’: No such file or directory
+[root@ip-10-0-1-100 ~]# rmdir /home/elba/
+rmdir: failed to remove ‘/home/elba/’: Directory not empty
+[root@ip-10-0-1-100 ~]# rm /home/elba/lib64/*
+rm: remove regular file ‘/home/elba/lib64/ld-linux-x86-64.so.2’? y
+rm: remove regular file ‘/home/elba/lib64/libacl.so.1’? y
+rm: remove regular file ‘/home/elba/lib64/libattr.so.1’? y
+rm: remove regular file ‘/home/elba/lib64/libcap.so.2’? y
+rm: remove regular file ‘/home/elba/lib64/libc.so.6’? y
+rm: remove regular file ‘/home/elba/lib64/libdl.so.2’? y
+rm: remove regular file ‘/home/elba/lib64/libpcre.so.1’? y
+rm: remove regular file ‘/home/elba/lib64/libpthread.so.0’? y
+rm: remove regular file ‘/home/elba/lib64/librt.so.1’? y
+rm: remove regular file ‘/home/elba/lib64/libselinux.so.1’? y
+rm: remove regular file ‘/home/elba/lib64/libtinfo.so.5’? y
+[root@ip-10-0-1-100 ~]# y
+-bash: y: command not found
+[root@ip-10-0-1-100 ~]# y
+-bash: y: command not found
+[root@ip-10-0-1-100 ~]# rmdir /home/elba/lib64
+[root@ip-10-0-1-100 ~]# rmdir /home/elba
+[root@ip-10-0-1-100 ~]# ls /home
+cloud_user  napoleon  ssm-user
+[root@ip-10-0-1-100 ~]# rmdir /home/napolean
+rmdir: failed to remove ‘/home/napolean’: No such file or directory
+[root@ip-10-0-1-100 ~]# rmdir /home/napoleon
+rmdir: failed to remove ‘/home/napoleon’: Directory not empty
+[root@ip-10-0-1-100 ~]# ls /home/napoleon
+[root@ip-10-0-1-100 ~]# ls /home/napoleon/*
+ls: cannot access /home/napoleon/*: No such file or directory
+[root@ip-10-0-1-100 ~]# ls /home
+cloud_user  napoleon  ssm-user
+[root@ip-10-0-1-100 ~]# rmdir /home/napoleon
+rmdir: failed to remove ‘/home/napoleon’: Directory not empty
+[root@ip-10-0-1-100 ~]# ls /home/napoleon/
+[root@ip-10-0-1-100 ~]# rmdir /home/napoleon/
+rmdir: failed to remove ‘/home/napoleon/’: Directory not empty
+[root@ip-10-0-1-100 ~]# ls /home/napoleon/
+[root@ip-10-0-1-100 ~]# ls /home/napoleon
+[root@ip-10-0-1-100 ~]# mkdir /home/elba
+[root@ip-10-0-1-100 ~]# useradd napoleon
+useradd: user 'napoleon' already exists
+[root@ip-10-0-1-100 ~]# mkdir /home/elba/{bin,lib64}
+[root@ip-10-0-1-100 ~]# cp /bin/bash /home/elba/bin/bash
+[root@ip-10-0-1-100 ~]# cp /bin/ls /home/elba/bin/ls
+[root@ip-10-0-1-100 ~]# cp /bin/cat /home/elba/bin/cat
+[root@ip-10-0-1-100 ~]# ldd /bin/bash /bin/ls /bin/cat
+/bin/bash:
+        linux-vdso.so.1 =>  (0x00007fffe697f000)
+        libtinfo.so.5 => /lib64/libtinfo.so.5 (0x00007f6f64a54000)
+        libdl.so.2 => /lib64/libdl.so.2 (0x00007f6f64850000)
+        libc.so.6 => /lib64/libc.so.6 (0x00007f6f64482000)
+        /lib64/ld-linux-x86-64.so.2 (0x00007f6f64c7e000)
+/bin/ls:
+        linux-vdso.so.1 =>  (0x00007ffd233b5000)
+        libselinux.so.1 => /lib64/libselinux.so.1 (0x00007f19caf94000)
+        libcap.so.2 => /lib64/libcap.so.2 (0x00007f19cad8f000)
+        libacl.so.1 => /lib64/libacl.so.1 (0x00007f19cab86000)
+        libc.so.6 => /lib64/libc.so.6 (0x00007f19ca7b8000)
+        libpcre.so.1 => /lib64/libpcre.so.1 (0x00007f19ca556000)
+        libdl.so.2 => /lib64/libdl.so.2 (0x00007f19ca352000)
+        /lib64/ld-linux-x86-64.so.2 (0x00007f19cb1bb000)
+        libattr.so.1 => /lib64/libattr.so.1 (0x00007f19ca14d000)
+        libpthread.so.0 => /lib64/libpthread.so.0 (0x00007f19c9f31000)
+/bin/cat:
+        linux-vdso.so.1 =>  (0x00007fffc397f000)
+        libc.so.6 => /lib64/libc.so.6 (0x00007f073ab78000)
+        /lib64/ld-linux-x86-64.so.2 (0x00007f073af46000)
+[root@ip-10-0-1-100 ~]# cp /lib64/libtinfo.so.5 \
+> /lib64/libdl.so.2 \
+> /lib64/ld-linux-x86-64.so.2 \
+> /lib64/libselinux.so.1 \
+> /lib64/librt.so.1 \
+> /lib64/libcap.so.2 \
+> /lib64/libacl.so.1 \
+> /lib64/libc.so.6 \
+> /lib64/libpthread.so.0 \
+> /lib64/libattr.so.1 \
+> /lib64/libpcre.so.1 /home/elba/lib64
+[root@ip-10-0-1-100 ~]# vi /home/elba/waterloo.txt
+[root@ip-10-0-1-100 ~]# chroot /home/elba /bin/bash
+bash-4.2# pwd
+/
+bash-4.2# ls
+bin  lib64  waterloo.txt
+bash-4.2# cat
+cat waterloo.txt
+cat waterloo.txt
+^C
+bash-4.2#
+ssh: Connection to cloud_user@52.91.74.24:22 exited: Remote closed the connection
+/ $

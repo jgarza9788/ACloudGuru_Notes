@@ -2,13 +2,15 @@
 
 # links
 [dashboard](https://learn.acloud.guru/dashboard)
+[terminal](https://ssh.instantterminal.acloud.guru/)
 
 # Path Way
 https://learn.acloud.guru/learning-path/cloud-adjacent-containers
 
 1. Containers
 * [x] Containers and Orchestration
-* [] Essential Container Concepts
+* [2/8] Essential Container Concepts
+https://learn.acloud.guru/course/03155237-268d-4c80-b704-af2fbe5bdcdb/dashboard
 * [] Docker QuickStart
 * [] Kubernetes QuickStart
 2. Containers (Apprentice)
