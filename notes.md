@@ -9,7 +9,7 @@ https://learn.acloud.guru/learning-path/cloud-adjacent-containers
 
 1. Containers
 * [x] Containers and Orchestration
-* [5/8] Essential Container Concepts
+* [x] Essential Container Concepts
 https://learn.acloud.guru/course/03155237-268d-4c80-b704-af2fbe5bdcdb/dashboard
 * [] Docker QuickStart
 * [] Kubernetes QuickStart
@@ -30,3 +30,7 @@ https://learn.acloud.guru/course/03155237-268d-4c80-b704-af2fbe5bdcdb/dashboard
 5. Containers (Guru)
 * [] Monitoring Kubernetes With Prometheus
 
+
+
+# Labs for Later
+https://learn.acloud.guru/handson/d72be107-d0d7-46fd-b66e-2c47ea05da48
