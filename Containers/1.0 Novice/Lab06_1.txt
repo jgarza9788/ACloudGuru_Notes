@@ -1,0 +1,503 @@
+Welcome to A Cloud Guru's SSH Instant Terminal
+
+You can use this terminal to ssh to other systems.
+- Just run 'ssh USERNAME@HOSTNAME'
+
+You can add a pem key too.
+- Just run 'add_key' and follow the instructions.
+
+
+
+Advanced SSH options:
+
+Dropbear SSH client v2020.81 https://matt.ucc.asn.au/dropbear/dropbear.html
+Usage: ssh [options] [user@]host[/port] [command]
+-p <remoteport>
+-l <username>
+-t    Allocate a pty
+-T    Don't allocate a pty
+-N    Don't run a remote command
+-f    Run in background after auth
+-y    Always accept remote host key if unknown
+-y -y Don't perform any remote host key checking (caution)
+-s    Request a subsystem (use by external sftp)
+-o option     Set option in OpenSSH-like format ('-o help' to list options)
+-i <identityfile>   (multiple allowed, default .ssh/id_dropbear)
+-A    Enable agent auth forwarding
+-W <receive_window_buffer> (default 24576, larger may be faster, max 1MB)
+-K <keepalive>  (0 is never, default 0)
+-I <idle_timeout>  (0 is never, default 0)
+-c <cipher list> Specify preferred ciphers ('-c help' to list options)
+-m <MAC list> Specify preferred MACs for packet verification (or '-m help')
+-b    [bind_address][:bind_port]
+-V    Version
+/ $ ssh cloud_user@18.234.180.67
+
+Host '18.234.180.67' is not in the trusted hosts file.
+(ssh-ed25519 fingerprint sha1!! c5:6e:5b:10:df:86:98:52:00:52:99:93:23:fd:8e:ba:48:56:fd:60)
+Do you want to continue connecting? (y/n) y
+cloud_user@18.234.180.67's password:
+[cloud_user@k8smaster ~]$ sudo su
+[sudo] password for cloud_user:
+[root@k8smaster cloud_user]# setenforce 0 sed -i --follow-symlinks 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/sysconfig/selinux
+usage:  setenforce [ Enforcing | Permissive | 1 | 0 ]
+[root@k8smaster cloud_user]# modprobe br_netfilter echo '1' > /proc/sys/net/bridge/bridge-nf-call-iptables
+bash: /proc/sys/net/bridge/bridge-nf-call-iptables: No such file or directory
+[root@k8smaster cloud_user]# yum install -y yum-utils device-mapper-persistent-data lvm2
+Loaded plugins: fastestmirror
+Determining fastest mirrors
+ * base: download.cf.centos.org
+ * extras: download.cf.centos.org
+ * updates: download.cf.centos.org
+base                                                                                                            | 3.6 kB  00:00:00
+extras                                                                                                          | 2.9 kB  00:00:00
+updates                                                                                                         | 2.9 kB  00:00:00
+(1/4): base/7/x86_64/group_gz                                                                                   | 153 kB  00:00:00
+(2/4): extras/7/x86_64/primary_db                                                                               | 250 kB  00:00:00
+(3/4): base/7/x86_64/primary_db                                                                                 | 6.1 MB  00:00:00
+(4/4): updates/7/x86_64/primary_db                                                                              |  22 MB  00:00:00
+Package yum-utils-1.1.31-54.el7_8.noarch already installed and latest version
+Resolving Dependencies
+--> Running transaction check
+---> Package device-mapper-persistent-data.x86_64 0:0.8.5-3.el7_9.2 will be installed
+--> Processing Dependency: libaio.so.1(LIBAIO_0.4)(64bit) for package: device-mapper-persistent-data-0.8.5-3.el7_9.2.x86_64
+--> Processing Dependency: libaio.so.1(LIBAIO_0.1)(64bit) for package: device-mapper-persistent-data-0.8.5-3.el7_9.2.x86_64
+--> Processing Dependency: libaio.so.1()(64bit) for package: device-mapper-persistent-data-0.8.5-3.el7_9.2.x86_64
+---> Package lvm2.x86_64 7:2.02.187-6.el7_9.5 will be installed
+--> Processing Dependency: lvm2-libs = 7:2.02.187-6.el7_9.5 for package: 7:lvm2-2.02.187-6.el7_9.5.x86_64
+--> Processing Dependency: liblvm2app.so.2.2(Base)(64bit) for package: 7:lvm2-2.02.187-6.el7_9.5.x86_64
+--> Processing Dependency: libdevmapper-event.so.1.02(Base)(64bit) for package: 7:lvm2-2.02.187-6.el7_9.5.x86_64
+--> Processing Dependency: liblvm2app.so.2.2()(64bit) for package: 7:lvm2-2.02.187-6.el7_9.5.x86_64
+--> Processing Dependency: libdevmapper-event.so.1.02()(64bit) for package: 7:lvm2-2.02.187-6.el7_9.5.x86_64
+--> Running transaction check
+---> Package device-mapper-event-libs.x86_64 7:1.02.170-6.el7_9.5 will be installed
+---> Package libaio.x86_64 0:0.3.109-13.el7 will be installed
+---> Package lvm2-libs.x86_64 7:2.02.187-6.el7_9.5 will be installed
+--> Processing Dependency: device-mapper-event = 7:1.02.170-6.el7_9.5 for package: 7:lvm2-libs-2.02.187-6.el7_9.5.x86_64
+--> Running transaction check
+---> Package device-mapper-event.x86_64 7:1.02.170-6.el7_9.5 will be installed
+--> Finished Dependency Resolution
+
+Dependencies Resolved
+
+=======================================================================================================================================
+ Package                                      Arch                  Version                               Repository              Size
+=======================================================================================================================================
+Installing:
+ device-mapper-persistent-data                x86_64                0.8.5-3.el7_9.2                       updates                423 k
+ lvm2                                         x86_64                7:2.02.187-6.el7_9.5                  updates                1.3 M
+Installing for dependencies:
+ device-mapper-event                          x86_64                7:1.02.170-6.el7_9.5                  updates                192 k
+ device-mapper-event-libs                     x86_64                7:1.02.170-6.el7_9.5                  updates                192 k
+ libaio                                       x86_64                0.3.109-13.el7                        base                    24 k
+ lvm2-libs                                    x86_64                7:2.02.187-6.el7_9.5                  updates                1.1 M
+
+Transaction Summary
+=======================================================================================================================================
+Install  2 Packages (+4 Dependent packages)
+
+Total download size: 3.2 M
+Installed size: 8.1 M
+Downloading packages:
+(1/6): device-mapper-event-1.02.170-6.el7_9.5.x86_64.rpm                                                        | 192 kB  00:00:00
+(2/6): device-mapper-persistent-data-0.8.5-3.el7_9.2.x86_64.rpm                                                 | 423 kB  00:00:00
+(3/6): device-mapper-event-libs-1.02.170-6.el7_9.5.x86_64.rpm                                                   | 192 kB  00:00:00
+(4/6): lvm2-libs-2.02.187-6.el7_9.5.x86_64.rpm                                                                  | 1.1 MB  00:00:00
+(5/6): lvm2-2.02.187-6.el7_9.5.x86_64.rpm                                                                       | 1.3 MB  00:00:00
+(6/6): libaio-0.3.109-13.el7.x86_64.rpm                                                                         |  24 kB  00:00:00
+---------------------------------------------------------------------------------------------------------------------------------------
+Total                                                                                                  7.9 MB/s | 3.2 MB  00:00:00
+Running transaction check
+Running transaction test
+Transaction test succeeded
+Running transaction
+  Installing : 7:device-mapper-event-libs-1.02.170-6.el7_9.5.x86_64                                                                1/6
+  Installing : libaio-0.3.109-13.el7.x86_64                                                                                        2/6
+  Installing : device-mapper-persistent-data-0.8.5-3.el7_9.2.x86_64                                                                3/6
+  Installing : 7:device-mapper-event-1.02.170-6.el7_9.5.x86_64                                                                     4/6
+  Installing : 7:lvm2-libs-2.02.187-6.el7_9.5.x86_64                                                                               5/6
+  Installing : 7:lvm2-2.02.187-6.el7_9.5.x86_64                                                                                    6/6
+  Verifying  : 7:device-mapper-event-1.02.170-6.el7_9.5.x86_64                                                                     1/6
+  Verifying  : 7:lvm2-libs-2.02.187-6.el7_9.5.x86_64                                                                               2/6
+  Verifying  : device-mapper-persistent-data-0.8.5-3.el7_9.2.x86_64                                                                3/6
+  Verifying  : libaio-0.3.109-13.el7.x86_64                                                                                        4/6
+  Verifying  : 7:lvm2-2.02.187-6.el7_9.5.x86_64                                                                                    5/6
+  Verifying  : 7:device-mapper-event-libs-1.02.170-6.el7_9.5.x86_64                                                                6/6
+
+Installed:
+  device-mapper-persistent-data.x86_64 0:0.8.5-3.el7_9.2                        lvm2.x86_64 7:2.02.187-6.el7_9.5
+
+Dependency Installed:
+  device-mapper-event.x86_64 7:1.02.170-6.el7_9.5 device-mapper-event-libs.x86_64 7:1.02.170-6.el7_9.5 libaio.x86_64 0:0.3.109-13.el7
+  lvm2-libs.x86_64 7:2.02.187-6.el7_9.5
+
+Complete!
+[root@k8smaster cloud_user]# yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repownload.docker.com/linux/centos/docker-ce.repo
+Loaded plugins: fastestmirror
+adding repo from: https://download.docker.com/linux/centos/docker-ce.repo
+grabbing file https://download.docker.com/linux/centos/docker-ce.repo to /etc/yum.repos.d/docker-ce.repo
+repo saved to /etc/yum.repos.d/docker-ce.repo
+[root@k8smaster cloud_user]# yum install -y docker-ce
+Loaded plugins: fastestmirror
+Loading mirror speeds from cached hostfile
+ * base: download.cf.centos.org
+ * extras: download.cf.centos.org
+ * updates: download.cf.centos.org
+docker-ce-stable                              | 3.5 kB     00:00
+(1/2): docker-ce-stable/7/x86_64/updateinfo     |   55 B   00:00
+(2/2): docker-ce-stable/7/x86_64/primary_db     | 117 kB   00:00
+Resolving Dependencies
+--> Running transaction check
+---> Package docker-ce.x86_64 3:24.0.6-1.el7 will be installed
+--> Processing Dependency: container-selinux >= 2:2.74 for package: 3:docker-ce-24.0.6-1.el7.x86_64
+--> Processing Dependency: containerd.io >= 1.6.4 for package: 3:docker-ce-24.0.6-1.el7.x86_64
+--> Processing Dependency: docker-ce-cli for package: 3:docker-ce-24.0.6-1.el7.x86_64
+--> Processing Dependency: docker-ce-rootless-extras for package: 3:docker-ce-24.0.6-1.el7.x86_64
+--> Running transaction check
+---> Package container-selinux.noarch 2:2.119.2-1.911c772.el7_8 willbe installed
+---> Package containerd.io.x86_64 0:1.6.22-3.1.el7 will be installed
+---> Package docker-ce-cli.x86_64 1:24.0.6-1.el7 will be installed
+--> Processing Dependency: docker-buildx-plugin for package: 1:docker-ce-cli-24.0.6-1.el7.x86_64
+--> Processing Dependency: docker-compose-plugin for package: 1:docker-ce-cli-24.0.6-1.el7.x86_64
+---> Package docker-ce-rootless-extras.x86_64 0:24.0.6-1.el7 will beinstalled
+--> Processing Dependency: fuse-overlayfs >= 0.7 for package: docker-ce-rootless-extras-24.0.6-1.el7.x86_64
+--> Processing Dependency: slirp4netns >= 0.4 for package: docker-ce-rootless-extras-24.0.6-1.el7.x86_64
+--> Running transaction check
+---> Package docker-buildx-plugin.x86_64 0:0.11.2-1.el7 will be installed
+---> Package docker-compose-plugin.x86_64 0:2.21.0-1.el7 will be installed
+---> Package fuse-overlayfs.x86_64 0:0.7.2-6.el7_8 will be installed
+--> Processing Dependency: libfuse3.so.3(FUSE_3.2)(64bit) for package: fuse-overlayfs-0.7.2-6.el7_8.x86_64
+--> Processing Dependency: libfuse3.so.3(FUSE_3.0)(64bit) for package: fuse-overlayfs-0.7.2-6.el7_8.x86_64
+--> Processing Dependency: libfuse3.so.3()(64bit) for package: fuse-overlayfs-0.7.2-6.el7_8.x86_64
+---> Package slirp4netns.x86_64 0:0.4.3-4.el7_8 will be installed
+--> Running transaction check
+---> Package fuse3-libs.x86_64 0:3.6.1-4.el7 will be installed
+--> Finished Dependency Resolution
+
+Dependencies Resolved
+
+=====================================================================
+ Package               Arch   Version         Repository        Size
+=====================================================================
+Installing:
+ docker-ce             x86_64 3:24.0.6-1.el7  docker-ce-stable  24 M
+Installing for dependencies:
+ container-selinux     noarch 2:2.119.2-1.911c772.el7_8
+                                              extras            40 k
+ containerd.io         x86_64 1.6.22-3.1.el7  docker-ce-stable  34 M
+ docker-buildx-plugin  x86_64 0.11.2-1.el7    docker-ce-stable  13 M
+ docker-ce-cli         x86_64 1:24.0.6-1.el7  docker-ce-stable  13 M
+ docker-ce-rootless-extras
+                       x86_64 24.0.6-1.el7    docker-ce-stable 9.1 M
+ docker-compose-plugin x86_64 2.21.0-1.el7    docker-ce-stable  13 M
+ fuse-overlayfs        x86_64 0.7.2-6.el7_8   extras            54 k
+ fuse3-libs            x86_64 3.6.1-4.el7     extras            82 k
+ slirp4netns           x86_64 0.4.3-4.el7_8   extras            81 k
+
+Transaction Summary
+=====================================================================
+Install  1 Package (+9 Dependent packages)
+
+Total download size: 107 M
+Installed size: 377 M
+Downloading packages:
+(1/10): container-selinux-2.119.2-1.911c772.el7 |  40 kB   00:00
+warning: /var/cache/yum/x86_64/7/docker-ce-stable/packages/docker-buildx-plugin-0.11.2-1.el7.x86_64.rpm: Header V4 RSA/SHA512 Signature, key ID 621e9f35: NOKEY
+Public key for docker-buildx-plugin-0.11.2-1.el7.x86_64.rpm is not installed
+(2/10): docker-buildx-plugin-0.11.2-1.el7.x86_6 |  13 MB   00:00
+(3/10): containerd.io-1.6.22-3.1.el7.x86_64.rpm |  34 MB   00:00
+(4/10): docker-ce-24.0.6-1.el7.x86_64.rpm       |  24 MB   00:00
+(5/10): docker-ce-cli-24.0.6-1.el7.x86_64.rpm   |  13 MB   00:00
+(6/10): fuse-overlayfs-0.7.2-6.el7_8.x86_64.rpm |  54 kB   00:00
+(7/10): slirp4netns-0.4.3-4.el7_8.x86_64.rpm    |  81 kB   00:00
+(8/10): docker-ce-rootless-extras-24.0.6-1.el7. | 9.1 MB   00:00
+(9/10): docker-compose-plugin-2.21.0-1.el7.x86_ |  13 MB   00:00
+(10/10): fuse3-libs-3.6.1-4.el7.x86_64.rpm      |  82 kB   00:00
+---------------------------------------------------------------------
+Total                                    86 MB/s | 107 MB  00:01
+Retrieving key from https://download.docker.com/linux/centos/gpg
+Importing GPG key 0x621E9F35:
+ Userid     : "Docker Release (CE rpm) <docker@docker.com>"
+ Fingerprint: 060a 61c5 1b55 8a7f 742b 77aa c52f eb6b 621e 9f35
+ From       : https://download.docker.com/linux/centos/gpg
+Running transaction check
+Running transaction test
+Transaction test succeeded
+Running transaction
+  Installing : 2:container-selinux-2.119.2-1.911c772.el7_8.n    1/10
+  Installing : containerd.io-1.6.22-3.1.el7.x86_64              2/10
+  Installing : docker-buildx-plugin-0.11.2-1.el7.x86_64         3/10
+  Installing : slirp4netns-0.4.3-4.el7_8.x86_64                 4/10
+  Installing : docker-compose-plugin-2.21.0-1.el7.x86_64        5/10
+  Installing : 1:docker-ce-cli-24.0.6-1.el7.x86_64              6/10
+  Installing : fuse3-libs-3.6.1-4.el7.x86_64                    7/10
+  Installing : fuse-overlayfs-0.7.2-6.el7_8.x86_64              8/10
+  Installing : 3:docker-ce-24.0.6-1.el7.x86_64                  9/10
+  Installing : docker-ce-rootless-extras-24.0.6-1.el7.x86_64   10/10
+  Verifying  : fuse3-libs-3.6.1-4.el7.x86_64                    1/10
+  Verifying  : docker-compose-plugin-2.21.0-1.el7.x86_64        2/10
+  Verifying  : slirp4netns-0.4.3-4.el7_8.x86_64                 3/10
+  Verifying  : 2:container-selinux-2.119.2-1.911c772.el7_8.n    4/10
+  Verifying  : docker-ce-rootless-extras-24.0.6-1.el7.x86_64    5/10
+  Verifying  : 3:docker-ce-24.0.6-1.el7.x86_64                  6/10
+  Verifying  : containerd.io-1.6.22-3.1.el7.x86_64              7/10
+  Verifying  : docker-buildx-plugin-0.11.2-1.el7.x86_64         8/10
+  Verifying  : fuse-overlayfs-0.7.2-6.el7_8.x86_64              9/10
+  Verifying  : 1:docker-ce-cli-24.0.6-1.el7.x86_64             10/10
+
+Installed:
+  docker-ce.x86_64 3:24.0.6-1.el7
+
+Dependency Installed:
+  container-selinux.noarch 2:2.119.2-1.911c772.el7_8
+  containerd.io.x86_64 0:1.6.22-3.1.el7
+  docker-buildx-plugin.x86_64 0:0.11.2-1.el7
+  docker-ce-cli.x86_64 1:24.0.6-1.el7
+  docker-ce-rootless-extras.x86_64 0:24.0.6-1.el7
+  docker-compose-plugin.x86_64 0:2.21.0-1.el7
+  fuse-overlayfs.x86_64 0:0.7.2-6.el7_8
+  fuse3-libs.x86_64 0:3.6.1-4.el7
+  slirp4netns.x86_64 0:0.4.3-4.el7_8
+
+Complete!
+[root@k8smaster cloud_user]# sed -i '/^ExecStart/ s/$/ --exec-opt native.cgroupdriver=systemd/' /usr/lib/systemd/system/docker.service
+[root@k8smaster cloud_user]# systemctl daemon-reload
+[root@k8smaster cloud_user]# systemctl enable docker --now
+Created symlink from /etc/systemd/system/multi-user.target.wants/docker.service to /usr/lib/systemd/system/docker.service.
+[root@k8smaster cloud_user]# cat << EOF > /etc/yum.repos.d/kubernetes.repo
+> [kubernetes]
+> name=Kubernetes
+> baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
+> enabled=1
+> gpgcheck=0
+> repo_gpgcheck=0
+> gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg
+>   https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+> EOF
+[root@k8smaster cloud_user]# yum install -y kubelet-1.14.0-0 kubeadm-1.14.0-0 kubectl-1.14.0-0 kubernetes-cni-0.7.5
+Loaded plugins: fastestmirror
+Loading mirror speeds from cached hostfile
+ * base: download.cf.centos.org
+ * extras: download.cf.centos.org
+ * updates: download.cf.centos.org
+kubernetes                                    | 1.4 kB     00:00
+kubernetes/primary                              | 136 kB   00:00
+kubernetes                                                 1010/1010
+Resolving Dependencies
+--> Running transaction check
+---> Package kubeadm.x86_64 0:1.14.0-0 will be installed
+--> Processing Dependency: cri-tools >= 1.11.0 for package: kubeadm-1.14.0-0.x86_64
+---> Package kubectl.x86_64 0:1.14.0-0 will be installed
+---> Package kubelet.x86_64 0:1.14.0-0 will be installed
+--> Processing Dependency: socat for package: kubelet-1.14.0-0.x86_64
+--> Processing Dependency: conntrack for package: kubelet-1.14.0-0.x86_64
+---> Package kubernetes-cni.x86_64 0:0.7.5-0 will be installed
+--> Running transaction check
+---> Package conntrack-tools.x86_64 0:1.4.4-7.el7 will be installed
+--> Processing Dependency: libnetfilter_cttimeout.so.1(LIBNETFILTER_CTTIMEOUT_1.1)(64bit) for package: conntrack-tools-1.4.4-7.el7.x86_64
+--> Processing Dependency: libnetfilter_cttimeout.so.1(LIBNETFILTER_CTTIMEOUT_1.0)(64bit) for package: conntrack-tools-1.4.4-7.el7.x86_64
+--> Processing Dependency: libnetfilter_cthelper.so.0(LIBNETFILTER_CTHELPER_1.0)(64bit) for package: conntrack-tools-1.4.4-7.el7.x86_64
+--> Processing Dependency: libnetfilter_queue.so.1()(64bit) for package: conntrack-tools-1.4.4-7.el7.x86_64
+--> Processing Dependency: libnetfilter_cttimeout.so.1()(64bit) for package: conntrack-tools-1.4.4-7.el7.x86_64
+--> Processing Dependency: libnetfilter_cthelper.so.0()(64bit) for package: conntrack-tools-1.4.4-7.el7.x86_64
+---> Package cri-tools.x86_64 0:1.26.0-0 will be installed
+---> Package socat.x86_64 0:1.7.3.2-2.el7 will be installed
+--> Running transaction check
+---> Package libnetfilter_cthelper.x86_64 0:1.0.0-11.el7 will be installed
+---> Package libnetfilter_cttimeout.x86_64 0:1.0.0-7.el7 will be installed
+---> Package libnetfilter_queue.x86_64 0:1.0.2-2.el7_2 will be installed
+--> Finished Dependency Resolution
+
+Dependencies Resolved
+
+=====================================================================
+ Package                 Arch    Version           Repository   Size
+=====================================================================
+Installing:
+ kubeadm                 x86_64  1.14.0-0          kubernetes  8.7 M
+ kubectl                 x86_64  1.14.0-0          kubernetes  9.5 M
+ kubelet                 x86_64  1.14.0-0          kubernetes   23 M
+ kubernetes-cni          x86_64  0.7.5-0           kubernetes   10 M
+Installing for dependencies:
+ conntrack-tools         x86_64  1.4.4-7.el7       base        187 k
+ cri-tools               x86_64  1.26.0-0          kubernetes  8.6 M
+ libnetfilter_cthelper   x86_64  1.0.0-11.el7      base         18 k
+ libnetfilter_cttimeout  x86_64  1.0.0-7.el7       base         18 k
+ libnetfilter_queue      x86_64  1.0.2-2.el7_2     base         23 k
+ socat                   x86_64  1.7.3.2-2.el7     base        290 k
+
+Transaction Summary
+=====================================================================
+Install  4 Packages (+6 Dependent packages)
+
+Total download size: 61 M
+Installed size: 277 M
+Downloading packages:
+(1/10): conntrack-tools-1.4.4-7.el7.x86_64.rpm  | 187 kB   00:00
+(2/10): 3f5ba2b53701ac9102ea7c7ab2ca6616a8cd596 | 8.6 MB   00:00
+(3/10): fea2c041b42bef6e4de4ee45eee4456236f2feb | 8.7 MB   00:00
+(4/10): 2b52e839216dfc620bd1429cdb87d08d00516ea | 9.5 MB   00:00
+(5/10): libnetfilter_cthelper-1.0.0-11.el7.x86_ |  18 kB   00:00
+(6/10): libnetfilter_queue-1.0.2-2.el7_2.x86_64 |  23 kB   00:00
+(7/10): socat-1.7.3.2-2.el7.x86_64.rpm          | 290 kB   00:00
+(8/10): libnetfilter_cttimeout-1.0.0-7.el7.x86_ |  18 kB   00:00
+(9/10): 6089961a11403e579c547532462e16b1bb1f97e |  23 MB   00:01
+(10/10): 548a0dcd865c16a50980420ddfa5fbccb8b596 |  10 MB   00:01
+---------------------------------------------------------------------
+Total                                    24 MB/s |  61 MB  00:02
+Running transaction check
+Running transaction test
+Transaction test succeeded
+Running transaction
+  Installing : libnetfilter_cttimeout-1.0.0-7.el7.x86_64        1/10
+  Installing : socat-1.7.3.2-2.el7.x86_64                       2/10
+  Installing : kubectl-1.14.0-0.x86_64                          3/10
+  Installing : libnetfilter_cthelper-1.0.0-11.el7.x86_64        4/10
+  Installing : cri-tools-1.26.0-0.x86_64                        5/10
+  Installing : libnetfilter_queue-1.0.2-2.el7_2.x86_64          6/10
+  Installing : conntrack-tools-1.4.4-7.el7.x86_64               7/10
+  Installing : kubernetes-cni-0.7.5-0.x86_64                    8/10
+  Installing : kubelet-1.14.0-0.x86_64                          9/10
+  Installing : kubeadm-1.14.0-0.x86_64                         10/10
+  Verifying  : kubelet-1.14.0-0.x86_64                          1/10
+  Verifying  : kubeadm-1.14.0-0.x86_64                          2/10
+  Verifying  : conntrack-tools-1.4.4-7.el7.x86_64               3/10
+  Verifying  : libnetfilter_queue-1.0.2-2.el7_2.x86_64          4/10
+  Verifying  : cri-tools-1.26.0-0.x86_64                        5/10
+  Verifying  : libnetfilter_cthelper-1.0.0-11.el7.x86_64        6/10
+  Verifying  : kubectl-1.14.0-0.x86_64                          7/10
+  Verifying  : kubernetes-cni-0.7.5-0.x86_64                    8/10
+  Verifying  : socat-1.7.3.2-2.el7.x86_64                       9/10
+  Verifying  : libnetfilter_cttimeout-1.0.0-7.el7.x86_64       10/10
+
+Installed:
+  kubeadm.x86_64 0:1.14.0-0      kubectl.x86_64 0:1.14.0-0
+  kubelet.x86_64 0:1.14.0-0      kubernetes-cni.x86_64 0:0.7.5-0
+
+Dependency Installed:
+  conntrack-tools.x86_64 0:1.4.4-7.el7
+  cri-tools.x86_64 0:1.26.0-0
+  libnetfilter_cthelper.x86_64 0:1.0.0-11.el7
+  libnetfilter_cttimeout.x86_64 0:1.0.0-7.el7
+  libnetfilter_queue.x86_64 0:1.0.2-2.el7_2
+  socat.x86_64 0:1.7.3.2-2.el7
+
+Complete!
+[root@k8smaster cloud_user]# systemctl enable kubelet
+Created symlink from /etc/systemd/system/multi-user.target.wants/kubelet.service to /usr/lib/systemd/system/kubelet.service.
+[root@k8smaster cloud_user]# kubeadm init --pod-network-cidr=10.244.0.0/16
+I0906 22:56:31.409590    8448 version.go:240] remote version is muchnewer: v1.28.1; falling back to: stable-1.14
+[init] Using Kubernetes version: v1.14.10
+[preflight] Running pre-flight checks
+        [WARNING SystemVerification]: this Docker version is not on the list of validated versions: 24.0.6. Latest validated version: 18.09
+[preflight] Pulling images required for setting up a Kubernetes cluster
+[preflight] This might take a minute or two, depending on the speed of your internet connection
+[preflight] You can also perform this action in beforehand using 'kubeadm config images pull'
+[kubelet-start] Writing kubelet environment file with flags to file "/var/lib/kubelet/kubeadm-flags.env"
+[kubelet-start] Writing kubelet configuration to file "/var/lib/kubelet/config.yaml"
+[kubelet-start] Activating the kubelet service
+[certs] Using certificateDir folder "/etc/kubernetes/pki"
+[certs] Generating "ca" certificate and key
+[certs] Generating "apiserver" certificate and key
+[certs] apiserver serving cert is signed for DNS names [k8smaster kubernetes kubernetes.default kubernetes.default.svc kubernetes.default.svc.cluster.local] and IPs [10.96.0.1 10.0.1.100]
+[certs] Generating "apiserver-kubelet-client" certificate and key
+[certs] Generating "front-proxy-ca" certificate and key
+[certs] Generating "front-proxy-client" certificate and key
+[certs] Generating "etcd/ca" certificate and key
+[certs] Generating "etcd/peer" certificate and key
+[certs] etcd/peer serving cert is signed for DNS names [k8smaster localhost] and IPs [10.0.1.100 127.0.0.1 ::1]
+[certs] Generating "etcd/healthcheck-client" certificate and key
+[certs] Generating "apiserver-etcd-client" certificate and key
+[certs] Generating "etcd/server" certificate and key
+[certs] etcd/server serving cert is signed for DNS names [k8smaster localhost] and IPs [10.0.1.100 127.0.0.1 ::1]
+[certs] Generating "sa" key and public key
+[kubeconfig] Using kubeconfig folder "/etc/kubernetes"
+[kubeconfig] Writing "admin.conf" kubeconfig file
+[kubeconfig] Writing "kubelet.conf" kubeconfig file
+[kubeconfig] Writing "controller-manager.conf" kubeconfig file
+[kubeconfig] Writing "scheduler.conf" kubeconfig file
+[control-plane] Using manifest folder "/etc/kubernetes/manifests"
+[control-plane] Creating static Pod manifest for "kube-apiserver"
+[control-plane] Creating static Pod manifest for "kube-controller-manager"
+[control-plane] Creating static Pod manifest for "kube-scheduler"
+[etcd] Creating static Pod manifest for local etcd in "/etc/kubernetes/manifests"
+[wait-control-plane] Waiting for the kubelet to boot up the control plane as static Pods from directory "/etc/kubernetes/manifests". This can take up to 4m0s
+[apiclient] All control plane components are healthy after 17.502860 seconds
+[upload-config] storing the configuration used in ConfigMap "kubeadm-config" in the "kube-system" Namespace
+[kubelet] Creating a ConfigMap "kubelet-config-1.14" in namespace kube-system with the configuration for the kubelets in the cluster
+[upload-certs] Skipping phase. Please see --experimental-upload-certs
+[mark-control-plane] Marking the node k8smaster as control-plane by adding the label "node-role.kubernetes.io/master=''"
+[mark-control-plane] Marking the node k8smaster as control-plane by adding the taints [node-role.kubernetes.io/master:NoSchedule]
+[bootstrap-token] Using token: 3ih9xh.22lc29uoq27s2ush
+[bootstrap-token] Configuring bootstrap tokens, cluster-info ConfigMap, RBAC Roles
+[bootstrap-token] configured RBAC rules to allow Node Bootstrap tokens to post CSRs in order for nodes to get long term certificate credentials
+[bootstrap-token] configured RBAC rules to allow the csrapprover controller automatically approve CSRs from a Node Bootstrap Token
+[bootstrap-token] configured RBAC rules to allow certificate rotation for all node client certificates in the cluster
+[bootstrap-token] creating the "cluster-info" ConfigMap in the "kube-public" namespace
+[addons] Applied essential addon: CoreDNS
+[addons] Applied essential addon: kube-proxy
+
+Your Kubernetes control-plane has initialized successfully!
+
+To start using your cluster, you need to run the following as a regular user:
+
+  mkdir -p $HOME/.kube
+  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+You should now deploy a pod network to the cluster.
+Run "kubectl apply -f [podnetwork].yaml" with one of the options listed at:
+  https://kubernetes.io/docs/concepts/cluster-administration/addons/
+
+Then you can join any number of worker nodes by running the following oneach as root:
+
+kubeadm join 10.0.1.100:6443 --token 3ih9xh.22lc29uoq27s2ush \
+    --discovery-token-ca-cert-hash sha256:3b44d9f4018166c0ab884e23e5afdb148679057c75e09f017e0230a48b895f03
+[root@k8smaster cloud_user]# ^C
+[root@k8smaster cloud_user]# sudo -s
+[root@k8smaster cloud_user]# su cloud_user
+[cloud_user@k8smaster ~]$ ls /etc/kubernetes/
+admin.conf               kubelet.conf  pki
+controller-manager.conf  manifests     scheduler.conf
+[cloud_user@k8smaster ~]$ mkdir -p $HOME/.kube
+[cloud_user@k8smaster ~]$ sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+[sudo] password for cloud_user:
+[cloud_user@k8smaster ~]$ sudo chown $(id -u):$(id -g) $HOME/.kube/config[cloud_user@k8smaster ~]$ kubectl apply -f https://raw.githubusercontent.com/flannel-io/flannel/master/Documentation/kube-flannel-old.yaml
+clusterrole.rbac.authorization.k8s.io/flannel created
+clusterrolebinding.rbac.authorization.k8s.io/flannel created
+serviceaccount/flannel created
+configmap/kube-flannel-cfg created
+daemonset.extensions/kube-flannel-ds-amd64 created
+daemonset.extensions/kube-flannel-ds-arm64 created
+daemonset.extensions/kube-flannel-ds-arm created
+daemonset.extensions/kube-flannel-ds-ppc64le created
+daemonset.extensions/kube-flannel-ds-s390x created
+[cloud_user@k8smaster ~]$ kubectl get pods --all-namespaces
+NAMESPACE     NAME                                READY   STATUS    RESTARTS   AGE
+kube-system   coredns-584795fc57-79v5p            0/1     Pending   0      2m24s
+kube-system   coredns-584795fc57-9lcz2            0/1     Pending   0      2m24s
+kube-system   etcd-k8smaster                      1/1     Running   0      78s
+kube-system   kube-apiserver-k8smaster            1/1     Running   0      81s
+kube-system   kube-controller-manager-k8smaster   1/1     Running   0      83s
+kube-system   kube-flannel-ds-amd64-qj66h         1/1     Running   0      18s
+kube-system   kube-proxy-7phxq                    1/1     Running   0      2m23s
+kube-system   kube-scheduler-k8smaster            1/1     Running   0      78s
+[cloud_user@k8smaster ~]$ kubectl get nodes
+NAME        STATUS   ROLES    AGE     VERSION
+k8smaster   Ready    master   4m40s   v1.14.0
+k8snode1    Ready    <none>   78s     v1.14.0
+k8snode2    Ready    <none>   75s     v1.14.0
+[cloud_user@k8smaster ~]$ kubectl create deployment nginx --image=nginx
+deployment.apps/nginx created
+[cloud_user@k8smaster ~]$ kubectl get pods
+NAME                     READY   STATUS              RESTARTS   AGE
+nginx-65f88748fd-mvcw2   0/1     ContainerCreating   0          7s
+[cloud_user@k8smaster ~]$ kubectl scale deployment nginx --replicas=4
+deployment.extensions/nginx scaled
+[cloud_user@k8smaster ~]$ kubectl get pods
+NAME                     READY   STATUS              RESTARTS   AGE
+nginx-65f88748fd-7fxkx   0/1     ContainerCreating   0          7s
+nginx-65f88748fd-hz7jw   0/1     Pending             0          7s
+nginx-65f88748fd-mvcw2   0/1     ContainerCreating   0          20s
+nginx-65f88748fd-r5l84   0/1     ContainerCreating   0          7s
+[cloud_user@k8smaster ~]$ ^
