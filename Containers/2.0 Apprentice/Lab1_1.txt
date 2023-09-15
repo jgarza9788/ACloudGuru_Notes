@@ -1,0 +1,916 @@
+net.ipv6.conf.all.use_tempaddr = 2
+net.ipv6.conf.default.use_tempaddr = 2
+* Applying /etc/sysctl.d/10-kernel-hardening.conf ...
+kernel.kptr_restrict = 1
+* Applying /etc/sysctl.d/10-link-restrictions.conf ...
+fs.protected_hardlinks = 1
+fs.protected_symlinks = 1
+* Applying /etc/sysctl.d/10-magic-sysrq.conf ...
+kernel.sysrq = 176
+* Applying /etc/sysctl.d/10-network-security.conf ...
+net.ipv4.conf.default.rp_filter = 2
+net.ipv4.conf.all.rp_filter = 2
+* Applying /etc/sysctl.d/10-ptrace.conf ...
+kernel.yama.ptrace_scope = 1
+* Applying /etc/sysctl.d/10-zeropage.conf ...
+vm.mmap_min_addr = 65536
+* Applying /usr/lib/sysctl.d/50-default.conf ...
+net.ipv4.conf.default.promote_secondaries = 1
+sysctl: setting key "net.ipv4.conf.all.promote_secondaries": Invalid argument
+net.ipv4.ping_group_range = 0 2147483647
+net.core.default_qdisc = fq_codel
+fs.protected_regular = 1
+fs.protected_fifos = 1
+* Applying /usr/lib/sysctl.d/50-pid-max.conf ...
+kernel.pid_max = 4194304
+* Applying /etc/sysctl.d/99-cloudimg-ipv6.conf ...
+net.ipv6.conf.all.use_tempaddr = 0
+net.ipv6.conf.default.use_tempaddr = 0
+* Applying /etc/sysctl.d/99-kubernetes-cri.conf ...
+net.bridge.bridge-nf-call-iptables = 1
+net.ipv4.ip_forward = 1
+net.bridge.bridge-nf-call-ip6tables = 1
+* Applying /etc/sysctl.d/99-sysctl.conf ...
+* Applying /usr/lib/sysctl.d/protect-links.conf ...
+fs.protected_fifos = 1
+fs.protected_hardlinks = 1
+fs.protected_regular = 2
+fs.protected_symlinks = 1
+* Applying /etc/sysctl.conf ...
+cloud_user@k8s-control:~$ sudo apt-get update && sudo apt-get install -y containerd.io
+Hit:1 http://us-east-1.ec2.archive.ubuntu.com/ubuntu focal InRelease
+Get:2 http://us-east-1.ec2.archive.ubuntu.com/ubuntu focal-updates InRelease [114 kB]
+Hit:3 http://us-east-1.ec2.archive.ubuntu.com/ubuntu focal-backports InRelease
+Hit:4 https://download.docker.com/linux/ubuntu focal InRelease
+Hit:5 http://security.ubuntu.com/ubuntu focal-security InRelease
+Get:6 http://us-east-1.ec2.archive.ubuntu.com/ubuntu focal-updates/main amd64c-n-f Metadata [17.1 kB]
+Fetched 131 kB in 1s (154 kB/s)
+Reading package lists... Done
+Reading package lists... Done
+Building dependency tree
+Reading state information... Done
+The following NEW packages will be installed:
+  containerd.io
+0 upgraded, 1 newly installed, 0 to remove and 159 not upgraded.
+Need to get 28.3 MB of archives.
+After this operation, 116 MB of additional disk space will be used.
+Get:1 https://download.docker.com/linux/ubuntu focal/stable amd64 containerd.io amd64 1.6.22-1 [28.3 MB]
+Fetched 28.3 MB in 2s (13.6 MB/s)
+Selecting previously unselected package containerd.io.
+(Reading database ... 125158 files and directories currently installed.)
+Preparing to unpack .../containerd.io_1.6.22-1_amd64.deb ...
+Unpacking containerd.io (1.6.22-1) ...
+Setting up containerd.io (1.6.22-1) ...
+Created symlink /etc/systemd/system/multi-user.target.wants/containerd.service → /lib/systemd/system/containerd.service.
+Processing triggers for man-db (2.9.1-1) ...
+cloud_user@k8s-control:~$ sudo mkdir -p /etc/containerd
+cloud_user@k8s-control:~$ sudo containerd config default | sudo tee /etc/containerd/config.toml
+disabled_plugins = []
+imports = []
+oom_score = 0
+plugin_dir = ""
+required_plugins = []
+root = "/var/lib/containerd"
+state = "/run/containerd"
+temp = ""
+version = 2
+
+[cgroup]
+  path = ""
+
+[debug]
+  address = ""
+  format = ""
+  gid = 0
+  level = ""
+  uid = 0
+
+[grpc]
+  address = "/run/containerd/containerd.sock"
+  gid = 0
+  max_recv_message_size = 16777216
+  max_send_message_size = 16777216
+  tcp_address = ""
+  tcp_tls_ca = ""
+  tcp_tls_cert = ""
+  tcp_tls_key = ""
+  uid = 0
+
+[metrics]
+  address = ""
+  grpc_histogram = false
+
+[plugins]
+
+  [plugins."io.containerd.gc.v1.scheduler"]
+    deletion_threshold = 0
+    mutation_threshold = 100
+    pause_threshold = 0.02
+    schedule_delay = "0s"
+    startup_delay = "100ms"
+
+  [plugins."io.containerd.grpc.v1.cri"]
+    device_ownership_from_security_context = false
+    disable_apparmor = false
+    disable_cgroup = false
+    disable_hugetlb_controller = true
+    disable_proc_mount = false
+    disable_tcp_service = true
+    enable_selinux = false
+    enable_tls_streaming = false
+    enable_unprivileged_icmp = false
+    enable_unprivileged_ports = false
+    ignore_image_defined_volumes = false
+    max_concurrent_downloads = 3
+    max_container_log_line_size = 16384
+    netns_mounts_under_state_dir = false
+    restrict_oom_score_adj = false
+    sandbox_image = "registry.k8s.io/pause:3.6"
+    selinux_category_range = 1024
+    stats_collect_period = 10
+    stream_idle_timeout = "4h0m0s"
+    stream_server_address = "127.0.0.1"
+    stream_server_port = "0"
+    systemd_cgroup = false
+    tolerate_missing_hugetlb_controller = true
+    unset_seccomp_profile = ""
+
+    [plugins."io.containerd.grpc.v1.cri".cni]
+      bin_dir = "/opt/cni/bin"
+      conf_dir = "/etc/cni/net.d"
+      conf_template = ""
+      ip_pref = ""
+      max_conf_num = 1
+
+    [plugins."io.containerd.grpc.v1.cri".containerd]
+      default_runtime_name = "runc"
+      disable_snapshot_annotations = true
+      discard_unpacked_layers = false
+      ignore_rdt_not_enabled_errors = false
+      no_pivot = false
+      snapshotter = "overlayfs"
+
+      [plugins."io.containerd.grpc.v1.cri".containerd.default_runtime]
+        base_runtime_spec = ""
+        cni_conf_dir = ""
+        cni_max_conf_num = 0
+        container_annotations = []
+        pod_annotations = []
+        privileged_without_host_devices = false
+        runtime_engine = ""
+        runtime_path = ""
+        runtime_root = ""
+        runtime_type = ""
+
+        [plugins."io.containerd.grpc.v1.cri".containerd.default_runtime.options]
+
+      [plugins."io.containerd.grpc.v1.cri".containerd.runtimes]
+
+        [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc]
+          base_runtime_spec = ""
+          cni_conf_dir = ""
+          cni_max_conf_num = 0
+          container_annotations = []
+          pod_annotations = []
+          privileged_without_host_devices = false
+          runtime_engine = ""
+          runtime_path = ""
+          runtime_root = ""
+          runtime_type = "io.containerd.runc.v2"
+
+          [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc.options]
+            BinaryName = ""
+            CriuImagePath = ""
+            CriuPath = ""
+            CriuWorkPath = ""
+            IoGid = 0
+            IoUid = 0
+            NoNewKeyring = false
+            NoPivotRoot = false
+            Root = ""
+            ShimCgroup = ""
+            SystemdCgroup = false
+
+      [plugins."io.containerd.grpc.v1.cri".containerd.untrusted_workload_runtime]
+        base_runtime_spec = ""
+        cni_conf_dir = ""
+        cni_max_conf_num = 0
+        container_annotations = []
+        pod_annotations = []
+        privileged_without_host_devices = false
+        runtime_engine = ""
+        runtime_path = ""
+        runtime_root = ""
+        runtime_type = ""
+
+        [plugins."io.containerd.grpc.v1.cri".containerd.untrusted_workload_runtime.options]
+
+    [plugins."io.containerd.grpc.v1.cri".image_decryption]
+      key_model = "node"
+
+    [plugins."io.containerd.grpc.v1.cri".registry]
+      config_path = ""
+
+      [plugins."io.containerd.grpc.v1.cri".registry.auths]
+
+      [plugins."io.containerd.grpc.v1.cri".registry.configs]
+
+      [plugins."io.containerd.grpc.v1.cri".registry.headers]
+
+      [plugins."io.containerd.grpc.v1.cri".registry.mirrors]
+
+    [plugins."io.containerd.grpc.v1.cri".x509_key_pair_streaming]
+      tls_cert_file = ""
+      tls_key_file = ""
+
+  [plugins."io.containerd.internal.v1.opt"]
+    path = "/opt/containerd"
+
+  [plugins."io.containerd.internal.v1.restart"]
+    interval = "10s"
+
+  [plugins."io.containerd.internal.v1.tracing"]
+    sampling_ratio = 1.0
+    service_name = "containerd"
+
+  [plugins."io.containerd.metadata.v1.bolt"]
+    content_sharing_policy = "shared"
+
+  [plugins."io.containerd.monitor.v1.cgroups"]
+    no_prometheus = false
+
+  [plugins."io.containerd.runtime.v1.linux"]
+    no_shim = false
+    runtime = "runc"
+    runtime_root = ""
+    shim = "containerd-shim"
+    shim_debug = false
+
+  [plugins."io.containerd.runtime.v2.task"]
+    platforms = ["linux/amd64"]
+    sched_core = false
+
+  [plugins."io.containerd.service.v1.diff-service"]
+    default = ["walking"]
+
+  [plugins."io.containerd.service.v1.tasks-service"]
+    rdt_config_file = ""
+
+  [plugins."io.containerd.snapshotter.v1.aufs"]
+    root_path = ""
+
+  [plugins."io.containerd.snapshotter.v1.btrfs"]
+    root_path = ""
+
+  [plugins."io.containerd.snapshotter.v1.devmapper"]
+    async_remove = false
+    base_image_size = ""
+    discard_blocks = false
+    fs_options = ""
+    fs_type = ""
+    pool_name = ""
+    root_path = ""
+
+  [plugins."io.containerd.snapshotter.v1.native"]
+    root_path = ""
+
+  [plugins."io.containerd.snapshotter.v1.overlayfs"]
+    root_path = ""
+    upperdir_label = false
+
+  [plugins."io.containerd.snapshotter.v1.zfs"]
+    root_path = ""
+
+  [plugins."io.containerd.tracing.processor.v1.otlp"]
+    endpoint = ""
+    insecure = false
+    protocol = ""
+
+[proxy_plugins]
+
+[stream_processors]
+
+  [stream_processors."io.containerd.ocicrypt.decoder.v1.tar"]
+    accepts = ["application/vnd.oci.image.layer.v1.tar+encrypted"]
+    args = ["--decryption-keys-path", "/etc/containerd/ocicrypt/keys"]
+    env = ["OCICRYPT_KEYPROVIDER_CONFIG=/etc/containerd/ocicrypt/ocicrypt_keyprovider.conf"]
+    path = "ctd-decoder"
+    returns = "application/vnd.oci.image.layer.v1.tar"
+
+  [stream_processors."io.containerd.ocicrypt.decoder.v1.tar.gzip"]
+    accepts = ["application/vnd.oci.image.layer.v1.tar+gzip+encrypted"]
+    args = ["--decryption-keys-path", "/etc/containerd/ocicrypt/keys"]
+    env = ["OCICRYPT_KEYPROVIDER_CONFIG=/etc/containerd/ocicrypt/ocicrypt_keyprovider.conf"]
+    path = "ctd-decoder"
+    returns = "application/vnd.oci.image.layer.v1.tar+gzip"
+
+[timeouts]
+  "io.containerd.timeout.bolt.open" = "0s"
+  "io.containerd.timeout.shim.cleanup" = "5s"
+  "io.containerd.timeout.shim.load" = "5s"
+  "io.containerd.timeout.shim.shutdown" = "3s"
+  "io.containerd.timeout.task.state" = "2s"
+
+[ttrpc]
+  address = ""
+  gid = 0
+  uid = 0
+cloud_user@k8s-control:~$ sudo systemctl restart containerd
+cloud_user@k8s-control:~$ sudo systemctl status containerd
+● containerd.service - containerd container runtime
+     Loaded: loaded (/lib/systemd/system/containerd.service; enabled; vendor >
+     Active: active (running) since Fri 2023-09-15 00:05:31 UTC; 6s ago
+       Docs: https://containerd.io
+    Process: 3967 ExecStartPre=/sbin/modprobe overlay (code=exited, status=0/>
+   Main PID: 3968 (containerd)
+      Tasks: 9
+     Memory: 12.7M
+     CGroup: /system.slice/containerd.service
+             └─3968 /usr/bin/containerd
+
+Sep 15 00:05:31 k8s-control containerd[3968]: time="2023-09-15T00:05:31.24500>
+Sep 15 00:05:31 k8s-control containerd[3968]: time="2023-09-15T00:05:31.24511>
+Sep 15 00:05:31 k8s-control containerd[3968]: time="2023-09-15T00:05:31.25435>
+Sep 15 00:05:31 k8s-control containerd[3968]: time="2023-09-15T00:05:31.25476>
+Sep 15 00:05:31 k8s-control containerd[3968]: time="2023-09-15T00:05:31.25508>
+Sep 15 00:05:31 k8s-control containerd[3968]: time="2023-09-15T00:05:31.25510>
+Sep 15 00:05:31 k8s-control containerd[3968]: time="2023-09-15T00:05:31.25512>
+Sep 15 00:05:31 k8s-control containerd[3968]: time="2023-09-15T00:05:31.25514>
+Sep 15 00:05:31 k8s-control systemd[1]: Started containerd container runtime.
+Sep 15 00:05:31 k8s-control containerd[3968]: time="2023-09-15T00:05:31.26100>
+...skipping...
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+● containerd.service - containerd container runtime
+     Loaded: loaded (/lib/systemd/system/containerd.service; enabled; vendor >
+     Active: active (running) since Fri 2023-09-15 00:05:31 UTC; 6s ago
+       Docs: https://containerd.io
+    Process: 3967 ExecStartPre=/sbin/modprobe overlay (code=exited, status=0/>
+   Main PID: 3968 (containerd)
+      Tasks: 9
+     Memory: 12.7M
+     CGroup: /system.slice/containerd.service
+             └─3968 /usr/bin/containerd
+
+Sep 15 00:05:31 k8s-control containerd[3968]: time="2023-09-15T00:05:31.24500>
+Sep 15 00:05:31 k8s-control containerd[3968]: time="2023-09-15T00:05:31.24511>
+Sep 15 00:05:31 k8s-control containerd[3968]: time="2023-09-15T00:05:31.25435>
+Sep 15 00:05:31 k8s-control containerd[3968]: time="2023-09-15T00:05:31.25476>
+Sep 15 00:05:31 k8s-control containerd[3968]: time="2023-09-15T00:05:31.25508>
+Sep 15 00:05:31 k8s-control containerd[3968]: time="2023-09-15T00:05:31.25510>
+Sep 15 00:05:31 k8s-control containerd[3968]: time="2023-09-15T00:05:31.25512>
+Sep 15 00:05:31 k8s-control containerd[3968]: time="2023-09-15T00:05:31.25514>
+Sep 15 00:05:31 k8s-control systemd[1]: Started containerd container runtime.
+Sep 15 00:05:31 k8s-control containerd[3968]: time="2023-09-15T00:05:31.26100>
+~
+...skipping...
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+● containerd.service - containerd container runtime
+     Loaded: loaded (/lib/systemd/system/containerd.service; enabled; vendor >
+     Active: active (running) since Fri 2023-09-15 00:05:31 UTC; 6s ago
+       Docs: https://containerd.io
+    Process: 3967 ExecStartPre=/sbin/modprobe overlay (code=exited, status=0/>
+   Main PID: 3968 (containerd)
+      Tasks: 9
+     Memory: 12.7M
+     CGroup: /system.slice/containerd.service
+             └─3968 /usr/bin/containerd
+
+Sep 15 00:05:31 k8s-control containerd[3968]: time="2023-09-15T00:05:31.24500>
+Sep 15 00:05:31 k8s-control containerd[3968]: time="2023-09-15T00:05:31.24511>
+Sep 15 00:05:31 k8s-control containerd[3968]: time="2023-09-15T00:05:31.25435>
+Sep 15 00:05:31 k8s-control containerd[3968]: time="2023-09-15T00:05:31.25476>
+Sep 15 00:05:31 k8s-control containerd[3968]: time="2023-09-15T00:05:31.25508>
+Sep 15 00:05:31 k8s-control containerd[3968]: time="2023-09-15T00:05:31.25510>
+Sep 15 00:05:31 k8s-control containerd[3968]: time="2023-09-15T00:05:31.25512>
+Sep 15 00:05:31 k8s-control containerd[3968]: time="2023-09-15T00:05:31.25514>
+Sep 15 00:05:31 k8s-control systemd[1]: Started containerd container runtime.
+Sep 15 00:05:31 k8s-control containerd[3968]: time="2023-09-15T00:05:31.26100>
+...skipping...
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+● containerd.service - containerd container runtime
+     Loaded: loaded (/lib/systemd/system/containerd.service; enabled; vendor >
+     Active: active (running) since Fri 2023-09-15 00:05:31 UTC; 6s ago
+       Docs: https://containerd.io
+    Process: 3967 ExecStartPre=/sbin/modprobe overlay (code=exited, status=0/>
+   Main PID: 3968 (containerd)
+      Tasks: 9
+     Memory: 12.7M
+     CGroup: /system.slice/containerd.service
+             └─3968 /usr/bin/containerd
+
+Sep 15 00:05:31 k8s-control containerd[3968]: time="2023-09-15T00:05:31.24500>
+Sep 15 00:05:31 k8s-control containerd[3968]: time="2023-09-15T00:05:31.24511>
+Sep 15 00:05:31 k8s-control containerd[3968]: time="2023-09-15T00:05:31.25435>
+Sep 15 00:05:31 k8s-control containerd[3968]: time="2023-09-15T00:05:31.25476>
+Sep 15 00:05:31 k8s-control containerd[3968]: time="2023-09-15T00:05:31.25508>
+Sep 15 00:05:31 k8s-control containerd[3968]: time="2023-09-15T00:05:31.25510>
+Sep 15 00:05:31 k8s-control containerd[3968]: time="2023-09-15T00:05:31.25512>
+Sep 15 00:05:31 k8s-control containerd[3968]: time="2023-09-15T00:05:31.25514>
+Sep 15 00:05:31 k8s-control systemd[1]: Started containerd container runtime.
+Sep 15 00:05:31 k8s-control containerd[3968]: time="2023-09-15T00:05:31.26100>
+...skipping...
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+cloud_user@k8s-control:~$
+cloud_user@k8s-control:~$ sudo swapoff -a
+cloud_user@k8s-control:~$ sudo apt-get update && sudo apt-get install -y apt-transport-https curl
+Hit:1 http://us-east-1.ec2.archive.ubuntu.com/ubuntu focal InRelease
+Hit:2 http://us-east-1.ec2.archive.ubuntu.com/ubuntu focal-updates InRelease
+Hit:3 http://us-east-1.ec2.archive.ubuntu.com/ubuntu focal-backports InRelease
+Hit:4 https://download.docker.com/linux/ubuntu focal InRelease
+Hit:5 http://security.ubuntu.com/ubuntu focal-security InRelease
+Reading package lists... Done
+Reading package lists... Done
+Building dependency tree
+Reading state information... Done
+The following additional packages will be installed:
+  libcurl4
+The following NEW packages will be installed:
+  apt-transport-https
+The following packages will be upgraded:
+  curl libcurl4
+2 upgraded, 1 newly installed, 0 to remove and 157 not upgraded.
+Need to get 398 kB of archives.
+After this operation, 166 kB of additional disk space will be used.
+Get:1 http://us-east-1.ec2.archive.ubuntu.com/ubuntu focal-updates/universe amd64 apt-transport-https all 2.0.9 [1704 B]
+Get:2 http://us-east-1.ec2.archive.ubuntu.com/ubuntu focal-updates/main amd64curl amd64 7.68.0-1ubuntu2.19 [161 kB]
+Get:3 http://us-east-1.ec2.archive.ubuntu.com/ubuntu focal-updates/main amd64libcurl4 amd64 7.68.0-1ubuntu2.19 [235 kB]
+Fetched 398 kB in 0s (12.2 MB/s)
+Selecting previously unselected package apt-transport-https.
+(Reading database ... 125174 files and directories currently installed.)
+Preparing to unpack .../apt-transport-https_2.0.9_all.deb ...
+Unpacking apt-transport-https (2.0.9) ...
+Preparing to unpack .../curl_7.68.0-1ubuntu2.19_amd64.deb ...
+Unpacking curl (7.68.0-1ubuntu2.19) over (7.68.0-1ubuntu2.16) ...
+Preparing to unpack .../libcurl4_7.68.0-1ubuntu2.19_amd64.deb ...
+Unpacking libcurl4:amd64 (7.68.0-1ubuntu2.19) over (7.68.0-1ubuntu2.16) ...
+Setting up apt-transport-https (2.0.9) ...
+Setting up libcurl4:amd64 (7.68.0-1ubuntu2.19) ...
+Setting up curl (7.68.0-1ubuntu2.19) ...
+Processing triggers for man-db (2.9.1-1) ...
+Processing triggers for libc-bin (2.31-0ubuntu9.9) ...
+cloud_user@k8s-control:~$ curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+OK
+cloud_user@k8s-control:~$ cat <<EOF | sudo tee /etc/apt/sources.list.d/kubernetes.list
+> deb https://apt.kubernetes.io/ kubernetes-xenial main
+> EOF
+deb https://apt.kubernetes.io/ kubernetes-xenial main
+cloud_user@k8s-control:~$ sudo apt-get update
+Hit:1 http://us-east-1.ec2.archive.ubuntu.com/ubuntu focal InRelease
+Hit:2 http://us-east-1.ec2.archive.ubuntu.com/ubuntu focal-updates InRelease
+Hit:3 http://us-east-1.ec2.archive.ubuntu.com/ubuntu focal-backports InRelease
+Hit:4 http://security.ubuntu.com/ubuntu focal-security InRelease
+Hit:5 https://download.docker.com/linux/ubuntu focal InRelease
+Get:6 https://packages.cloud.google.com/apt kubernetes-xenial InRelease [8993B]
+Get:7 https://packages.cloud.google.com/apt kubernetes-xenial/main amd64 Packages [69.9 kB]
+Fetched 78.9 kB in 1s (72.3 kB/s)
+Reading package lists... Done
+cloud_user@k8s-control:~$ sudo apt-get install -y kubelet=1.27.0-00 kubeadm=1.27.0-00 kubectl=1.27.0-00
+Reading package lists... Done
+Building dependency tree
+Reading state information... Done
+The following additional packages will be installed:
+  conntrack cri-tools ebtables kubernetes-cni socat
+Suggested packages:
+  nftables
+The following NEW packages will be installed:
+  conntrack cri-tools ebtables kubeadm kubectl kubelet kubernetes-cni socat
+0 upgraded, 8 newly installed, 0 to remove and 157 not upgraded.
+Need to get 85.9 MB of archives.
+After this operation, 329 MB of additional disk space will be used.
+Get:1 http://us-east-1.ec2.archive.ubuntu.com/ubuntu focal/main amd64 conntrack amd64 1:1.4.5-2 [30.3 kB]
+Get:2 http://us-east-1.ec2.archive.ubuntu.com/ubuntu focal/main amd64 ebtables amd64 2.0.11-3build1 [80.3 kB]
+Get:3 http://us-east-1.ec2.archive.ubuntu.com/ubuntu focal/main amd64 socat amd64 1.7.3.3-2 [323 kB]
+Get:4 https://packages.cloud.google.com/apt kubernetes-xenial/main amd64 cri-tools amd64 1.26.0-00 [18.9 MB]
+Get:5 https://packages.cloud.google.com/apt kubernetes-xenial/main amd64 kubernetes-cni amd64 1.2.0-00 [27.6 MB]
+Get:6 https://packages.cloud.google.com/apt kubernetes-xenial/main amd64 kubelet amd64 1.27.0-00 [18.8 MB]
+Get:7 https://packages.cloud.google.com/apt kubernetes-xenial/main amd64 kubectl amd64 1.27.0-00 [10.2 MB]
+Get:8 https://packages.cloud.google.com/apt kubernetes-xenial/main amd64 kubeadm amd64 1.27.0-00 [9931 kB]
+Fetched 85.9 MB in 4s (20.3 MB/s)
+Selecting previously unselected package conntrack.
+(Reading database ... 125178 files and directories currently installed.)
+Preparing to unpack .../0-conntrack_1%3a1.4.5-2_amd64.deb ...
+Unpacking conntrack (1:1.4.5-2) ...
+Selecting previously unselected package cri-tools.
+Preparing to unpack .../1-cri-tools_1.26.0-00_amd64.deb ...
+Unpacking cri-tools (1.26.0-00) ...
+Selecting previously unselected package ebtables.
+Preparing to unpack .../2-ebtables_2.0.11-3build1_amd64.deb ...
+Unpacking ebtables (2.0.11-3build1) ...
+Selecting previously unselected package kubernetes-cni.
+Preparing to unpack .../3-kubernetes-cni_1.2.0-00_amd64.deb ...
+Unpacking kubernetes-cni (1.2.0-00) ...
+Selecting previously unselected package socat.
+Preparing to unpack .../4-socat_1.7.3.3-2_amd64.deb ...
+Unpacking socat (1.7.3.3-2) ...
+Selecting previously unselected package kubelet.
+Preparing to unpack .../5-kubelet_1.27.0-00_amd64.deb ...
+Unpacking kubelet (1.27.0-00) ...
+Selecting previously unselected package kubectl.
+Preparing to unpack .../6-kubectl_1.27.0-00_amd64.deb ...
+Unpacking kubectl (1.27.0-00) ...
+Selecting previously unselected package kubeadm.
+Preparing to unpack .../7-kubeadm_1.27.0-00_amd64.deb ...
+Unpacking kubeadm (1.27.0-00) ...
+Setting up conntrack (1:1.4.5-2) ...
+Setting up kubectl (1.27.0-00) ...
+Setting up ebtables (2.0.11-3build1) ...
+Setting up socat (1.7.3.3-2) ...
+Setting up cri-tools (1.26.0-00) ...
+Setting up kubernetes-cni (1.2.0-00) ...
+Setting up kubelet (1.27.0-00) ...
+Created symlink /etc/systemd/system/multi-user.target.wants/kubelet.service →/lib/systemd/system/kubelet.service.
+Setting up kubeadm (1.27.0-00) ...
+Processing triggers for man-db (2.9.1-1) ...
+cloud_user@k8s-control:~$ sudo apt-mark hold kubelet kubeadm kubectl
+kubelet set on hold.
+kubeadm set on hold.
+kubectl set on hold.
+cloud_user@k8s-control:~$ sudo kubeadm init --pod-network-cidr 192.168.0.0/16--kubernetes-version 1.27.0
+[init] Using Kubernetes version: v1.27.0
+[preflight] Running pre-flight checks
+[preflight] Pulling images required for setting up a Kubernetes cluster
+[preflight] This might take a minute or two, depending on the speed of your internet connection
+[preflight] You can also perform this action in beforehand using 'kubeadm config images pull'
+W0915 00:15:51.439886    5918 images.go:80] could not find officially supported version of etcd for Kubernetes v1.27.0, falling back to the nearest etcd version (3.5.7-0)
+W0915 00:16:01.326354    5918 checks.go:835] detected that the sandbox image "registry.k8s.io/pause:3.6" of the container runtime is inconsistent with thatused by kubeadm. It is recommended that using "registry.k8s.io/pause:3.9" as the CRI sandbox image.
+[certs] Using certificateDir folder "/etc/kubernetes/pki"
+[certs] Generating "ca" certificate and key
+[certs] Generating "apiserver" certificate and key
+[certs] apiserver serving cert is signed for DNS names [k8s-control kubernetes kubernetes.default kubernetes.default.svc kubernetes.default.svc.cluster.local] and IPs [10.96.0.1 10.0.1.101]
+[certs] Generating "apiserver-kubelet-client" certificate and key
+[certs] Generating "front-proxy-ca" certificate and key
+[certs] Generating "front-proxy-client" certificate and key
+[certs] Generating "etcd/ca" certificate and key
+[certs] Generating "etcd/server" certificate and key
+[certs] etcd/server serving cert is signed for DNS names [k8s-control localhost] and IPs [10.0.1.101 127.0.0.1 ::1]
+[certs] Generating "etcd/peer" certificate and key
+[certs] etcd/peer serving cert is signed for DNS names [k8s-control localhost] and IPs [10.0.1.101 127.0.0.1 ::1]
+[certs] Generating "etcd/healthcheck-client" certificate and key
+[certs] Generating "apiserver-etcd-client" certificate and key
+[certs] Generating "sa" key and public key
+[kubeconfig] Using kubeconfig folder "/etc/kubernetes"
+[kubeconfig] Writing "admin.conf" kubeconfig file
+[kubeconfig] Writing "kubelet.conf" kubeconfig file
+[kubeconfig] Writing "controller-manager.conf" kubeconfig file
+[kubeconfig] Writing "scheduler.conf" kubeconfig file
+[kubelet-start] Writing kubelet environment file with flags to file "/var/lib/kubelet/kubeadm-flags.env"
+[kubelet-start] Writing kubelet configuration to file "/var/lib/kubelet/config.yaml"
+[kubelet-start] Starting the kubelet
+[control-plane] Using manifest folder "/etc/kubernetes/manifests"
+[control-plane] Creating static Pod manifest for "kube-apiserver"
+[control-plane] Creating static Pod manifest for "kube-controller-manager"
+[control-plane] Creating static Pod manifest for "kube-scheduler"
+[etcd] Creating static Pod manifest for local etcd in "/etc/kubernetes/manifests"
+W0915 00:16:18.776656    5918 images.go:80] could not find officially supported version of etcd for Kubernetes v1.27.0, falling back to the nearest etcd version (3.5.7-0)
+[wait-control-plane] Waiting for the kubelet to boot up the control plane as static Pods from directory "/etc/kubernetes/manifests". This can take up to 4m0s
+mkdir -p $HOME/.kube
+[apiclient] All control plane components are healthy after 16.002669 seconds
+[upload-config] Storing the configuration used in ConfigMap "kubeadm-config" in the "kube-system" Namespace
+[kubelet] Creating a ConfigMap "kubelet-config" in namespace kube-system withthe configuration for the kubelets in the cluster
+[upload-certs] Skipping phase. Please see --upload-certs
+[mark-control-plane] Marking the node k8s-control as control-plane by adding the labels: [node-role.kubernetes.io/control-plane node.kubernetes.io/exclude-from-external-load-balancers]
+[mark-control-plane] Marking the node k8s-control as control-plane by adding the taints [node-role.kubernetes.io/control-plane:NoSchedule]
+[bootstrap-token] Using token: y9u2co.kxthimw1d5szezzp
+[bootstrap-token] Configuring bootstrap tokens, cluster-info ConfigMap, RBAC Roles
+[bootstrap-token] Configured RBAC rules to allow Node Bootstrap tokens to getnodes
+[bootstrap-token] Configured RBAC rules to allow Node Bootstrap tokens to post CSRs in order for nodes to get long term certificate credentials
+[bootstrap-token] Configured RBAC rules to allow the csrapprover controller automatically approve CSRs from a Node Bootstrap Token
+[bootstrap-token] Configured RBAC rules to allow certificate rotation for allnode client certificates in the cluster
+[bootstrap-token] Creating the "cluster-info" ConfigMap in the "kube-public" namespace
+[kubelet-finalize] Updating "/etc/kubernetes/kubelet.conf" to point to a rotatable kubelet client certificate and key
+[addons] Applied essential addon: CoreDNS
+[addons] Applied essential addon: kube-proxy
+
+Your Kubernetes control-plane has initialized successfully!
+
+To start using your cluster, you need to run the following as a regular user:
+
+  mkdir -p $HOME/.kube
+  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+Alternatively, if you are the root user, you can run:
+
+  export KUBECONFIG=/etc/kubernetes/admin.conf
+
+You should now deploy a pod network to the cluster.
+Run "kubectl apply -f [podnetwork].yaml" with one of the options listed at:
+  https://kubernetes.io/docs/concepts/cluster-administration/addons/
+
+Then you can join any number of worker nodes by running the following on eachas root:
+
+kubeadm join 10.0.1.101:6443 --token y9u2co.kxthimw1d5szezzp \
+        --discovery-token-ca-cert-hash sha256:3d7092e854b5353aad48fcb32a75307acee6ccdb54e1f6d5208486fb8af4c979
+cloud_user@k8s-control:~$ mkdir -p $HOME/.kube
+cloud_user@k8s-control:~$ sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+cloud_user@k8s-control:~$ sudo chown $(id -u):$(id -g) $HOME/.kube/config
+cloud_user@k8s-control:~$ kubectl get nodes
+NAME          STATUS     ROLES           AGE   VERSION
+k8s-control   NotReady   control-plane   27s   v1.27.0
+cloud_user@k8s-control:~$ kubectl apply -f https://raw.githubusercontent.com/projectcalico/calico/v3.25.0/manifests/calico.yaml
+poddisruptionbudget.policy/calico-kube-controllers created
+serviceaccount/calico-kube-controllers created
+serviceaccount/calico-node created
+configmap/calico-config created
+customresourcedefinition.apiextensions.k8s.io/bgpconfigurations.crd.projectcalico.org created
+customresourcedefinition.apiextensions.k8s.io/bgppeers.crd.projectcalico.org created
+customresourcedefinition.apiextensions.k8s.io/blockaffinities.crd.projectcalico.org created
+customresourcedefinition.apiextensions.k8s.io/caliconodestatuses.crd.projectcalico.org created
+customresourcedefinition.apiextensions.k8s.io/clusterinformations.crd.projectcalico.org created
+customresourcedefinition.apiextensions.k8s.io/felixconfigurations.crd.projectcalico.org created
+customresourcedefinition.apiextensions.k8s.io/globalnetworkpolicies.crd.projectcalico.org created
+customresourcedefinition.apiextensions.k8s.io/globalnetworksets.crd.projectcalico.org created
+customresourcedefinition.apiextensions.k8s.io/hostendpoints.crd.projectcalico.org created
+customresourcedefinition.apiextensions.k8s.io/ipamblocks.crd.projectcalico.org created
+customresourcedefinition.apiextensions.k8s.io/ipamconfigs.crd.projectcalico.org created
+customresourcedefinition.apiextensions.k8s.io/ipamhandles.crd.projectcalico.org created
+customresourcedefinition.apiextensions.k8s.io/ippools.crd.projectcalico.org created
+customresourcedefinition.apiextensions.k8s.io/ipreservations.crd.projectcalico.org created
+customresourcedefinition.apiextensions.k8s.io/kubecontrollersconfigurations.crd.projectcalico.org created
+customresourcedefinition.apiextensions.k8s.io/networkpolicies.crd.projectcalico.org created
+customresourcedefinition.apiextensions.k8s.io/networksets.crd.projectcalico.org created
+clusterrole.rbac.authorization.k8s.io/calico-kube-controllers created
+clusterrole.rbac.authorization.k8s.io/calico-node created
+clusterrolebinding.rbac.authorization.k8s.io/calico-kube-controllers created
+clusterrolebinding.rbac.authorization.k8s.io/calico-node created
+daemonset.apps/calico-node created
+deployment.apps/calico-kube-controllers created
+cloud_user@k8s-control:~$ kubectl get nodes
+NAME          STATUS   ROLES           AGE   VERSION
+k8s-control   Ready    control-plane   97s   v1.27.0
+cloud_user@k8s-control:~$ ^C
+cloud_user@k8s-control:~$ kubeadm token create --print-join-command
+kubeadm join 10.0.1.101:6443 --token 3lpr84.iv2yeelxka2pxgk3 --discovery-token-ca-cert-hash sha256:3d7092e854b5353aad48fcb32a75307acee6ccdb54e1f6d5208486fb8af4c979
+cloud_user@k8s-control:~$ kubectl get nodes
+NAME          STATUS     ROLES           AGE     VERSION
+k8s-control   Ready      control-plane   4m51s   v1.27.0
+k8s-worker1   NotReady   <none>          13s     v1.27.0
+k8s-worker2   NotReady   <none>          9s      v1.27.0
+cloud_user@k8s-control:~$
