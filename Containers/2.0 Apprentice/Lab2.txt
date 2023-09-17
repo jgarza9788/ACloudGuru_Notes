@@ -1,0 +1,125 @@
+Welcome to A Cloud Guru's SSH Instant Terminal
+
+You can use this terminal to ssh to other systems.
+- Just run 'ssh USERNAME@HOSTNAME'
+
+You can add a pem key too.
+- Just run 'add_key' and follow the instructions.
+
+
+
+Advanced SSH options:
+
+Dropbear SSH client v2020.81 https://matt.ucc.asn.au/dropbear/dropbear.html
+Usage: ssh [options] [user@]host[/port] [command]
+-p <remoteport>
+-l <username>
+-t    Allocate a pty
+-T    Don't allocate a pty
+-N    Don't run a remote command
+-f    Run in background after auth
+-y    Always accept remote host key if unknown
+-y -y Don't perform any remote host key checking (caution)
+-s    Request a subsystem (use by external sftp)
+-o option     Set option in OpenSSH-like format ('-o help' to list options)
+-i <identityfile>   (multiple allowed, default .ssh/id_dropbear)
+-A    Enable agent auth forwarding
+-W <receive_window_buffer> (default 24576, larger may be faster, max 1MB)
+-K <keepalive>  (0 is never, default 0)
+-I <idle_timeout>  (0 is never, default 0)
+-c <cipher list> Specify preferred ciphers ('-c help' to list options)
+-m <MAC list> Specify preferred MACs for packet verification (or '-m help')
+-b    [bind_address][:bind_port]
+-V    Version
+/ $ ssh cloud_user@54.157.203.154
+
+Host '54.157.203.154' is not in the trusted hosts file.
+(ssh-ed25519 fingerprint sha1!! 1c:33:0f:1d:7c:af:5a:b0:4a:b0:ea:4e:8b:74:2a:8f:9b:6b:19:6b)
+Do you want to continue connecting? (y/n) y
+cloud_user@54.157.203.154's password:
+Welcome to Ubuntu 18.04.6 LTS (GNU/Linux 5.4.0-1060-aws x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+ System information disabled due to load higher than 1.0
+
+ * Ubuntu Pro delivers the most comprehensive open source security and
+   compliance features.
+
+   https://ubuntu.com/aws/pro
+
+  Get cloud support with Ubuntu Advantage Cloud Guest:
+    http://www.ubuntu.com/business/services/cloud
+
+50 updates can be applied immediately.
+To see these additional updates run: apt list --upgradable
+
+
+*** System restart required ***
+cloud_user@ip-10-0-1-101:~$ cat << EOF | kubectl apply -f -
+> apiVersion: apps/v1
+> kind: Deployment
+> metadata:
+>   name: store-products
+>   labels:
+>     app: store-products
+> spec:
+>   replicas: 4
+>   selector:
+>     matchLabels:
+>       app: store-products
+>   template:
+>     metadata:
+>       labels:
+>         app: store-products
+>     spec:
+>       containers:
+>       - name: store-products
+>         image: linuxacademycontent/store-products:1.0.0
+>         ports:
+>         - containerPort: 80
+> EOF
+deployment.apps/store-products created
+cloud_user@ip-10-0-1-101:~$ cat << EOF | kubectl apply -f -
+> kind: Service
+> apiVersion: v1
+> metadata:
+>   name: store-products
+> spec:
+>   selector:
+>     app: store-products
+>   ports:
+>   - protocol: TCP
+>     port: 80
+>     targetPort: 80
+> EOF
+service/store-products created
+cloud_user@ip-10-0-1-101:~$ kubectl get svc store-products
+NAME             TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)   AGE
+store-products   ClusterIP   10.109.220.41   <none>        80/TCP    8s
+cloud_user@ip-10-0-1-101:~$ kubectl get svc store-products
+NAME             TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)   AGE
+store-products   ClusterIP   10.109.220.41   <none>        80/TCP    18s
+cloud_user@ip-10-0-1-101:~$ kubectl exec busybox -- curl -s store-products
+{
+        "Products":[
+                {
+                        "Name":"Apple",
+                        "Price":1000.00,
+                },
+                {
+                        "Name":"Banana",
+                        "Price":5.00,
+                },
+                {
+                        "Name":"Orange",
+                        "Price":1.00,
+                },
+                {
+                        "Name":"Pear",
+                        "Price":0.50,
+                }
+        ]
+}cloud_user@ip-10-0-1-101:~$ ^

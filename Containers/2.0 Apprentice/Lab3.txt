@@ -1,0 +1,176 @@
+Welcome to A Cloud Guru's SSH Instant Terminal
+
+You can use this terminal to ssh to other systems.
+- Just run 'ssh USERNAME@HOSTNAME'
+
+You can add a pem key too.
+- Just run 'add_key' and follow the instructions.
+
+
+
+Advanced SSH options:
+
+Dropbear SSH client v2020.81 https://matt.ucc.asn.au/dropbear/dropbear.html
+Usage: ssh [options] [user@]host[/port] [command]
+-p <remoteport>
+-l <username>
+-t    Allocate a pty
+-T    Don't allocate a pty
+-N    Don't run a remote command
+-f    Run in background after auth
+-y    Always accept remote host key if unknown
+-y -y Don't perform any remote host key checking (caution)
+-s    Request a subsystem (use by external sftp)
+-o option     Set option in OpenSSH-like format ('-o help' to list options)
+-i <identityfile>   (multiple allowed, default .ssh/id_dropbear)
+-A    Enable agent auth forwarding
+-W <receive_window_buffer> (default 24576, larger may be faster, max 1MB)
+-K <keepalive>  (0 is never, default 0)
+-I <idle_timeout>  (0 is never, default 0)
+-c <cipher list> Specify preferred ciphers ('-c help' to list options)
+-m <MAC list> Specify preferred MACs for packet verification (or '-m help')
+-b    [bind_address][:bind_port]
+-V    Version
+/ $ ssh cloud_user@54.144.168.9
+
+Host '54.144.168.9' is not in the trusted hosts file.
+(ssh-ed25519 fingerprint sha1!! 01:1c:bd:58:a5:9b:dc:dc:76:dd:27:eb:22:02:3d:9e:0a:66:76:f5)
+Do you want to continue connecting? (y/n) y
+cloud_user@54.144.168.9's password:
+Welcome to Ubuntu 18.04.6 LTS (GNU/Linux 5.4.0-1060-aws x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+  System information as of Sun Sep 17 00:01:18 UTC 2023
+
+  System load:  0.52               Users logged in:        0
+  Usage of /:   22.2% of 19.32GB   IP address for ens5:    10.0.1.101
+  Memory usage: 73%                IP address for docker0: 172.17.0.1
+  Swap usage:   0%                 IP address for cni0:    10.244.0.1
+  Processes:    132
+
+ * Ubuntu Pro delivers the most comprehensive open source security and
+   compliance features.
+
+   https://ubuntu.com/aws/pro
+
+  Get cloud support with Ubuntu Advantage Cloud Guest:
+    http://www.ubuntu.com/business/services/cloud
+
+204 updates can be applied immediately.
+168 of these updates are standard security updates.
+To see these additional updates run: apt list --upgradable
+
+
+cloud_user@ip-10-0-1-101:~$ cd ~/
+cloud_user@ip-10-0-1-101:~$ ls
+aws-cfn-bootstrap-latest
+cloud_user@ip-10-0-1-101:~$ git clone https://github.com/linuxacademy/robot-shop.git
+Cloning into 'robot-shop'...
+remote: Enumerating objects: 1100, done.
+remote: Total 1100 (delta 0), reused 0 (delta 0), pack-reused 1100
+Receiving objects: 100% (1100/1100), 80.21 MiB | 45.00 MiB/s, done.
+Resolving deltas: 100% (609/609), done.
+cloud_user@ip-10-0-1-101:~$ ls
+aws-cfn-bootstrap-latest  robot-shop
+cloud_user@ip-10-0-1-101:~$ kubectl create namespace robot-shop
+namespace/robot-shop created
+cloud_user@ip-10-0-1-101:~$ kubectl -n robot-shop create -f ~/robot-shop/K8s/descriptors/
+deployment.extensions/cart created
+service/cart created
+deployment.extensions/catalogue created
+service/catalogue created
+deployment.extensions/dispatch created
+service/dispatch created
+deployment.extensions/mongodb created
+service/mongodb created
+deployment.extensions/mysql created
+service/mysql created
+deployment.extensions/payment created
+service/payment created
+deployment.extensions/rabbitmq created
+service/rabbitmq created
+deployment.extensions/ratings created
+service/ratings created
+deployment.extensions/redis created
+service/redis created
+deployment.extensions/shipping created
+service/shipping created
+deployment.extensions/user created
+service/user created
+deployment.extensions/web created
+service/web created
+cloud_user@ip-10-0-1-101:~$ kubectl get pods -n robot-shop
+NAME                         READY   STATUS              RESTARTS   AGE
+cart-59b7dfbdcc-k5ztq        0/1     ContainerCreating   0          7s
+catalogue-796444cf68-n5pgj   0/1     ContainerCreating   0          7s
+dispatch-76cf85ddc6-ftwcr    0/1     ContainerCreating   0          7s
+mongodb-5969679ff7-ct2vs     0/1     ContainerCreating   0          7s
+mysql-7958997695-pj74k       0/1     ContainerCreating   0          7s
+payment-6fd7c8ff75-bkwr5     0/1     ContainerCreating   0          7s
+rabbitmq-6ddb6485bd-d962p    0/1     ContainerCreating   0          7s
+ratings-5fd67676b4-w7r7h     0/1     ContainerCreating   0          6s
+redis-dff4dbc55-vzgnh        0/1     ContainerCreating   0          6s
+shipping-8695b6c8-h2ngv      0/1     ContainerCreating   0          6s
+user-59d45d4db6-5428f        0/1     ContainerCreating   0          6s
+web-757b94795b-2xkhd         0/1     ContainerCreating   0          6s
+cloud_user@ip-10-0-1-101:~$ kubectl get pods -n robot-shop -w
+NAME                         READY   STATUS              RESTARTS   AGE
+cart-59b7dfbdcc-k5ztq        0/1     ContainerCreating   0          14s
+catalogue-796444cf68-n5pgj   0/1     ContainerCreating   0          14s
+dispatch-76cf85ddc6-ftwcr    0/1     ContainerCreating   0          14s
+mongodb-5969679ff7-ct2vs     0/1     ContainerCreating   0          14s
+mysql-7958997695-pj74k       0/1     ContainerCreating   0          14s
+payment-6fd7c8ff75-bkwr5     0/1     ContainerCreating   0          14s
+rabbitmq-6ddb6485bd-d962p    0/1     ContainerCreating   0          14s
+ratings-5fd67676b4-w7r7h     0/1     ContainerCreating   0          13s
+redis-dff4dbc55-vzgnh        0/1     ContainerCreating   0          13s
+shipping-8695b6c8-h2ngv      0/1     ContainerCreating   0          13s
+user-59d45d4db6-5428f        0/1     ContainerCreating   0          13s
+web-757b94795b-2xkhd         0/1     ContainerCreating   0          13s
+mysql-7958997695-pj74k   1/1   Running   0     21s
+shipping-8695b6c8-h2ngv   1/1   Running   0     24s
+ratings-5fd67676b4-w7r7h   1/1   Running   0     28s
+redis-dff4dbc55-vzgnh   1/1   Running   0     32s
+catalogue-796444cf68-n5pgj   1/1   Running   0     47s
+user-59d45d4db6-5428f   1/1   Running   0     48s
+cart-59b7dfbdcc-k5ztq   1/1   Running   0     49s
+web-757b94795b-2xkhd   1/1   Running   0     54s
+rabbitmq-6ddb6485bd-d962p   1/1   Running   0     63s
+mongodb-5969679ff7-ct2vs   1/1   Running   0     76s
+
+^[
+dispatch-76cf85ddc6-ftwcr   1/1   Running   0     94s
+-x
+exit
+payment-6fd7c8ff75-bkwr5   1/1   Running   0     112s
+^Ccloud_user@ip-10-0-1-101:~$ kubectl get pods -n robot-shop
+NAME                         READY   STATUS    RESTARTS   AGE
+cart-59b7dfbdcc-k5ztq        1/1     Running   0          2m27s
+catalogue-796444cf68-n5pgj   1/1     Running   0          2m27s
+dispatch-76cf85ddc6-ftwcr    1/1     Running   0          2m27s
+mongodb-5969679ff7-ct2vs     1/1     Running   0          2m27s
+mysql-7958997695-pj74k       1/1     Running   0          2m27s
+payment-6fd7c8ff75-bkwr5     1/1     Running   0          2m27s
+rabbitmq-6ddb6485bd-d962p    1/1     Running   0          2m27s
+ratings-5fd67676b4-w7r7h     1/1     Running   0          2m26s
+redis-dff4dbc55-vzgnh        1/1     Running   0          2m26s
+shipping-8695b6c8-h2ngv      1/1     Running   0          2m26s
+user-59d45d4db6-5428f        1/1     Running   0          2m26s
+web-757b94795b-2xkhd         1/1     Running   0          2m26s
+cloud_user@ip-10-0-1-101:~$ kubectl edit deployment mongodb -n robot-shop
+
+[1]+  Stopped                 kubectl edit deployment mongodb -n robot-shop
+cloud_user@ip-10-0-1-101:~$ kubectl edit deployment mongodb -n robot-shop
+Edit cancelled, no changes made.
+cloud_user@ip-10-0-1-101:~$ kubectl edit deployment mongodb -n robot-shop
+Edit cancelled, no changes made.
+cloud_user@ip-10-0-1-101:~$ vi
+cloud_user@ip-10-0-1-101:~$ kubectl edit deployment mongodb -n robot-shop
+deployment.extensions/mongodb edited
+cloud_user@ip-10-0-1-101:~$ kubectl get deployment mongodb -n robot-shop
+NAME      DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+mongodb   2         2         2            2           14m
+cloud_user@ip-10-0-1-101:~$
