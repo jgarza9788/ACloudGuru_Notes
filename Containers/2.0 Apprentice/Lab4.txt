@@ -1,0 +1,298 @@
+Welcome to A Cloud Guru's SSH Instant Terminal
+
+You can use this terminal to ssh to other systems.
+- Just run 'ssh USERNAME@HOSTNAME'
+
+You can add a pem key too.
+- Just run 'add_key' and follow the instructions.
+
+
+
+Advanced SSH options:
+
+Dropbear SSH client v2020.81 https://matt.ucc.asn.au/dropbear/dropbear.html
+Usage: ssh [options] [user@]host[/port] [command]
+-p <remoteport>
+-l <username>
+-t    Allocate a pty
+-T    Don't allocate a pty
+-N    Don't run a remote command
+-f    Run in background after auth
+-y    Always accept remote host key if unknown
+-y -y Don't perform any remote host key checking (caution)
+-s    Request a subsystem (use by external sftp)
+-o option     Set option in OpenSSH-like format ('-o help' to list options)
+-i <identityfile>   (multiple allowed, default .ssh/id_dropbear)
+-A    Enable agent auth forwarding
+-W <receive_window_buffer> (default 24576, larger may be faster, max 1MB)
+-K <keepalive>  (0 is never, default 0)
+-I <idle_timeout>  (0 is never, default 0)
+-c <cipher list> Specify preferred ciphers ('-c help' to list options)
+-m <MAC list> Specify preferred MACs for packet verification (or '-m help')
+-b    [bind_address][:bind_port]
+-V    Version
+/ $ ssh cloud_user@34.200.253.41
+
+Host '34.200.253.41' is not in the trusted hosts file.
+(ssh-ed25519 fingerprint sha1!! c3:66:02:d9:e8:88:7f:0d:10:bd:10:4c:b4:c4:17:d4:9e:c2:01:93)
+Do you want to continue connecting? (y/n) y
+cloud_user@34.200.253.41's password:
+Welcome to Ubuntu 18.04.6 LTS (GNU/Linux 5.4.0-1092-aws x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+  System information as of Sat Sep 23 21:26:50 UTC 2023
+
+  System load:  0.0                Processes:           102
+  Usage of /:   16.2% of 19.31GB   Users logged in:     0
+  Memory usage: 8%                 IP address for ens5: 10.0.1.101
+  Swap usage:   0%
+
+ * Ubuntu Pro delivers the most comprehensive open source security and
+   compliance features.
+
+   https://ubuntu.com/aws/pro
+
+  Get cloud support with Ubuntu Advantage Cloud Guest:
+    http://www.ubuntu.com/business/services/cloud
+
+29 updates can be applied immediately.
+To see these additional updates run: apt list --upgradable
+
+
+*** System restart required ***
+cloud_user@ip-10-0-1-101:~$ sudo apt-get remove docker docker-engine docker.io containerd runc
+[sudo] password for cloud_user:
+Reading package lists... Done
+Building dependency tree
+Reading state information... Done
+Package 'docker-engine' is not installed, so not removed
+Package 'docker' is not installed, so not removed
+Package 'containerd' is not installed, so not removed
+Package 'docker.io' is not installed, so not removed
+Package 'runc' is not installed, so not removed
+The following packages were automatically installed and are no longer required:
+  linux-aws-5.4-headers-5.4.0-1060 linux-headers-5.4.0-1060-aws linux-image-5.4.0-1060-aws linux-modules-5.4.0-1060-aws
+Use 'sudo apt autoremove' to remove them.
+0 upgraded, 0 newly installed, 0 to remove and 26 not upgraded.
+cloud_user@ip-10-0-1-101:~$ sudo apt update -y
+Hit:1 http://us-east-1.ec2.archive.ubuntu.com/ubuntu bionic InRelease
+Hit:2 http://us-east-1.ec2.archive.ubuntu.com/ubuntu bionic-updates InRelease
+Hit:3 http://us-east-1.ec2.archive.ubuntu.com/ubuntu bionic-backports InRelease
+Hit:4 http://security.ubuntu.com/ubuntu bionic-security InRelease
+Reading package lists... Done
+Building dependency tree
+Reading state information... Done
+26 packages can be upgraded. Run 'apt list --upgradable' to see them.
+cloud_user@ip-10-0-1-101:~$ sudo apt install -y ca-certificates curl gnupg
+Reading package lists... Done
+Building dependency tree
+Reading state information... Done
+ca-certificates is already the newest version (20230311ubuntu0.18.04.1).
+curl is already the newest version (7.58.0-2ubuntu3.24).
+gnupg is already the newest version (2.2.4-1ubuntu1.6).
+The following packages were automatically installed and are no longer required:
+  linux-aws-5.4-headers-5.4.0-1060 linux-headers-5.4.0-1060-aws linux-image-5.4.0-1060-aws linux-modules-5.4.0-1060-aws
+Use 'sudo apt autoremove' to remove them.
+0 upgraded, 0 newly installed, 0 to remove and 26 not upgraded.
+cloud_user@ip-10-0-1-101:~$ sudo install -m 0755 -d /etc/apt/keyrings
+cloud_user@ip-10-0-1-101:~$ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/
+gpg: WARNING: unsafe ownership on homedir '/home/cloud_user/.gnupg'
+File '/etc/apt/' exists. Overwrite? (y/N) y
+gpg: can't create '/etc/apt/': Is a directory
+gpg: no valid OpenPGP data found.
+gpg: dearmoring failed: Is a directory
+cloud_user@ip-10-0-1-101:~$ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+gpg: WARNING: unsafe ownership on homedir '/home/cloud_user/.gnupg'
+cloud_user@ip-10-0-1-101:~$ sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+gpg: WARNING: unsafe ownership on homedir '/home/cloud_user/.gnupg'
+File '/etc/apt/keyrings/docker.gpg' exists. Overwrite? (y/N) y
+cloud_user@ip-10-0-1-101:~$ sudo chmod a+r /etc/apt/keyrings/docker.gpg
+cloud_user@ip-10-0-1-101:~$ echo \
+> "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+> "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | \
+> sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+cloud_user@ip-10-0-1-101:~$ sudo apt -y update
+Hit:1 http://us-east-1.ec2.archive.ubuntu.com/ubuntu bionic InRelease
+Hit:2 http://us-east-1.ec2.archive.ubuntu.com/ubuntu bionic-updates InRelease
+Hit:3 http://us-east-1.ec2.archive.ubuntu.com/ubuntu bionic-backports InRelease
+Hit:4 http://security.ubuntu.com/ubuntu bionic-security InRelease
+Get:5 https://download.docker.com/linux/ubuntu bionic InRelease [64.4 kB]
+Get:6 https://download.docker.com/linux/ubuntu bionic/stable amd64 Packages [39.0 kB]
+Fetched 103 kB in 1s (193 kB/s)
+Reading package lists... Done
+Building dependency tree
+Reading state information... Done
+26 packages can be upgraded. Run 'apt list --upgradable' to see them.
+cloud_user@ip-10-0-1-101:~$ sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+Reading package lists... Done
+Building dependency tree
+Reading state information... Done
+The following packages were automatically installed and are no longer required:
+  linux-aws-5.4-headers-5.4.0-1060 linux-headers-5.4.0-1060-aws linux-image-5.4.0-1060-aws linux-modules-5.4.0-1060-aws
+Use 'sudo apt autoremove' to remove them.
+The following additional packages will be installed:
+  docker-ce-rootless-extras libltdl7 pigz
+Suggested packages:
+  aufs-tools cgroupfs-mount | cgroup-lite
+Recommended packages:
+  slirp4netns
+The following NEW packages will be installed:
+  containerd.io docker-buildx-plugin docker-ce docker-ce-cli docker-ce-rootless-extras docker-compose-plugin libltdl7 pigz
+0 upgraded, 8 newly installed, 0 to remove and 26 not upgraded.
+Need to get 111 MB of archives.
+After this operation, 402 MB of additional disk space will be used.
+Get:1 http://us-east-1.ec2.archive.ubuntu.com/ubuntu bionic/universe amd64 pigz amd64 2.4-1 [57.4 kB]
+Get:2 http://us-east-1.ec2.archive.ubuntu.com/ubuntu bionic/main amd64 libltdl7 amd64 2.4.6-2 [38.8 kB]
+Get:3 https://download.docker.com/linux/ubuntu bionic/stable amd64 containerd.io amd64 1.6.21-1 [28.3 MB]
+Get:4 https://download.docker.com/linux/ubuntu bionic/stable amd64 docker-buildx-plugin amd64 0.10.5-1~ubuntu.18.04~bionic [26.1 MB]
+Get:5 https://download.docker.com/linux/ubuntu bionic/stable amd64 docker-ce-cli amd64 5:24.0.2-1~ubuntu.18.04~bionic [13.3 MB]
+Get:6 https://download.docker.com/linux/ubuntu bionic/stable amd64 docker-ce amd64 5:24.0.2-1~ubuntu.18.04~bionic [22.9 MB]
+Get:7 https://download.docker.com/linux/ubuntu bionic/stable amd64 docker-ce-rootless-extras amd64 5:24.0.2-1~ubuntu.18.04~bionic [9014 kB]
+Get:8 https://download.docker.com/linux/ubuntu bionic/stable amd64 docker-compose-plugin amd64 2.18.1-1~ubuntu.18.04~bionic [10.9 MB]
+Fetched 111 MB in 3s (40.3 MB/s)
+Selecting previously unselected package pigz.
+(Reading database ... 149063 files and directories currently installed.)
+Preparing to unpack .../0-pigz_2.4-1_amd64.deb ...
+Unpacking pigz (2.4-1) ...
+Selecting previously unselected package containerd.io.
+Preparing to unpack .../1-containerd.io_1.6.21-1_amd64.deb ...
+Unpacking containerd.io (1.6.21-1) ...
+Selecting previously unselected package docker-buildx-plugin.
+Preparing to unpack .../2-docker-buildx-plugin_0.10.5-1~ubuntu.18.04~bionic_amd64.deb ...
+Unpacking docker-buildx-plugin (0.10.5-1~ubuntu.18.04~bionic) ...
+Selecting previously unselected package docker-ce-cli.
+Preparing to unpack .../3-docker-ce-cli_5%3a24.0.2-1~ubuntu.18.04~bionic_amd64.deb ...
+Unpacking docker-ce-cli (5:24.0.2-1~ubuntu.18.04~bionic) ...
+Selecting previously unselected package docker-ce.
+Preparing to unpack .../4-docker-ce_5%3a24.0.2-1~ubuntu.18.04~bionic_amd64.deb ...
+Unpacking docker-ce (5:24.0.2-1~ubuntu.18.04~bionic) ...
+Selecting previously unselected package docker-ce-rootless-extras.
+Preparing to unpack .../5-docker-ce-rootless-extras_5%3a24.0.2-1~ubuntu.18.04~bionic_amd64.deb ...
+Unpacking docker-ce-rootless-extras (5:24.0.2-1~ubuntu.18.04~bionic) ...
+Selecting previously unselected package docker-compose-plugin.
+Preparing to unpack .../6-docker-compose-plugin_2.18.1-1~ubuntu.18.04~bionic_amd64.deb ...
+Unpacking docker-compose-plugin (2.18.1-1~ubuntu.18.04~bionic) ...
+Selecting previously unselected package libltdl7:amd64.
+Preparing to unpack .../7-libltdl7_2.4.6-2_amd64.deb ...
+Unpacking libltdl7:amd64 (2.4.6-2) ...
+Setting up containerd.io (1.6.21-1) ...
+Created symlink /etc/systemd/system/multi-user.target.wants/containerd.service → /lib/systemd/system/containerd.service.
+Setting up docker-ce-rootless-extras (5:24.0.2-1~ubuntu.18.04~bionic) ...
+Setting up docker-buildx-plugin (0.10.5-1~ubuntu.18.04~bionic) ...
+Setting up libltdl7:amd64 (2.4.6-2) ...
+Setting up docker-compose-plugin (2.18.1-1~ubuntu.18.04~bionic) ...
+Setting up docker-ce-cli (5:24.0.2-1~ubuntu.18.04~bionic) ...
+Setting up pigz (2.4-1) ...
+Setting up docker-ce (5:24.0.2-1~ubuntu.18.04~bionic) ...
+Created symlink /etc/systemd/system/multi-user.target.wants/docker.service → /lib/systemd/system/docker.service.
+Created symlink /etc/systemd/system/sockets.target.wants/docker.socket → /lib/systemd/system/docker.socket.
+Processing triggers for libc-bin (2.27-3ubuntu1.6) ...
+Processing triggers for systemd (237-3ubuntu10.57) ...
+Processing triggers for man-db (2.8.3-2ubuntu0.1) ...
+Processing triggers for ureadahead (0.100.0-21) ...
+cloud_user@ip-10-0-1-101:~$ sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+Reading package lists... Done
+Building dependency tree
+Reading state information... Done
+containerd.io is already the newest version (1.6.21-1).
+docker-buildx-plugin is already the newest version (0.10.5-1~ubuntu.18.04~bionic).
+docker-ce-cli is already the newest version (5:24.0.2-1~ubuntu.18.04~bionic).
+docker-ce is already the newest version (5:24.0.2-1~ubuntu.18.04~bionic).
+docker-compose-plugin is already the newest version (2.18.1-1~ubuntu.18.04~bionic).
+The following packages were automatically installed and are no longer required:
+  linux-aws-5.4-headers-5.4.0-1060 linux-headers-5.4.0-1060-aws linux-image-5.4.0-1060-aws linux-modules-5.4.0-1060-aws
+Use 'sudo apt autoremove' to remove them.
+0 upgraded, 0 newly installed, 0 to remove and 26 not upgraded.
+cloud_user@ip-10-0-1-101:~$ sudo docker run hello-world
+Unable to find image 'hello-world:latest' locally
+latest: Pulling from library/hello-world
+719385e32844: Pull complete
+Digest: sha256:4f53e2564790c8e7856ec08e384732aa38dc43c52f02952483e3f003afbf23db
+Status: Downloaded newer image for hello-world:latest
+
+Hello from Docker!
+This message shows that your installation appears to be working correctly.
+
+To generate this message, Docker took the following steps:
+ 1. The Docker client contacted the Docker daemon.
+ 2. The Docker daemon pulled the "hello-world" image from the Docker Hub.
+    (amd64)
+ 3. The Docker daemon created a new container from that image which runs the
+    executable that produces the output you are currently reading.
+ 4. The Docker daemon streamed that output to the Docker client, which sent it
+    to your terminal.
+
+To try something more ambitious, you can run an Ubuntu container with:
+ $ docker run -it ubuntu bash
+
+Share images, automate workflows, and more with a free Docker ID:
+ https://hub.docker.com/
+
+For more examples and ideas, visit:
+ https://docs.docker.com/get-started/
+
+cloud_user@ip-10-0-1-101:~$ sudo groupadd docker
+groupadd: group 'docker' already exists
+cloud_user@ip-10-0-1-101:~$ sudo usermod -aG docker $USER
+cloud_user@ip-10-0-1-101:~$ newgrp docker
+cloud_user@ip-10-0-1-101:~$ docker run hello-world
+
+Hello from Docker!
+This message shows that your installation appears to be working correctly.
+
+To generate this message, Docker took the following steps:
+ 1. The Docker client contacted the Docker daemon.
+ 2. The Docker daemon pulled the "hello-world" image from the Docker Hub.
+    (amd64)
+ 3. The Docker daemon created a new container from that image which runs the
+    executable that produces the output you are currently reading.
+ 4. The Docker daemon streamed that output to the Docker client, which sent it
+    to your terminal.
+
+To try something more ambitious, you can run an Ubuntu container with:
+ $ docker run -it ubuntu bash
+
+Share images, automate workflows, and more with a free Docker ID:
+ https://hub.docker.com/
+
+For more examples and ideas, visit:
+ https://docs.docker.com/get-started/
+
+cloud_user@ip-10-0-1-101:~$ docker run hello-world
+
+Hello from Docker!
+This message shows that your installation appears to be working correctly.
+
+To generate this message, Docker took the following steps:
+ 1. The Docker client contacted the Docker daemon.
+ 2. The Docker daemon pulled the "hello-world" image from the Docker Hub.
+    (amd64)
+ 3. The Docker daemon created a new container from that image which runs the
+    executable that produces the output you are currently reading.
+ 4. The Docker daemon streamed that output to the Docker client, which sent it
+    to your terminal.
+
+To try something more ambitious, you can run an Ubuntu container with:
+ $ docker run -it ubuntu bash
+
+Share images, automate workflows, and more with a free Docker ID:
+ https://hub.docker.com/
+
+For more examples and ideas, visit:
+ https://docs.docker.com/get-started/
+
+cloud_user@ip-10-0-1-101:~$ sudo vi /etc/docker/daemon.json
+cloud_user@ip-10-0-1-101:~$ sudo systemctl restart docker
+cloud_user@ip-10-0-1-101:~$ docker info | grep Logging
+ Logging Driver: syslog
+WARNING: No swap limit support
+cloud_user@ip-10-0-1-101:~$ Logging Driver: syslog
+Logging: command not found
+cloud_user@ip-10-0-1-101:~$ sudo systemctl enable docker.service
+Synchronizing state of docker.service with SysV service script with /lib/systemd/systemd-sysv-install.
+Executing: /lib/systemd/systemd-sysv-install enable docker
+cloud_user@ip-10-0-1-101:~$ sudo systemctl enable containerd.service
+cloud_user@ip-10-0-1-101:~$
