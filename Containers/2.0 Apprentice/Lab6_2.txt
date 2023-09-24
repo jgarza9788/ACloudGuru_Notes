@@ -1,0 +1,104 @@
+Welcome to A Cloud Guru's SSH Instant Terminal
+
+You can use this terminal to ssh to other systems.
+- Just run 'ssh USERNAME@HOSTNAME'
+
+You can add a pem key too.
+- Just run 'add_key' and follow the instructions.
+
+
+
+Advanced SSH options:
+
+Dropbear SSH client v2020.81 https://matt.ucc.asn.au/dropbear/dropbear.html
+Usage: ssh [options] [user@]host[/port] [command]
+-p <remoteport>
+-l <username>
+-t    Allocate a pty
+-T    Don't allocate a pty
+-N    Don't run a remote command
+-f    Run in background after auth
+-y    Always accept remote host key if unknown
+-y -y Don't perform any remote host key checking (caution)
+-s    Request a subsystem (use by external sftp)
+-o option     Set option in OpenSSH-like format ('-o help' to list options)
+-i <identityfile>   (multiple allowed, default .ssh/id_dropbear)
+-A    Enable agent auth forwarding
+-W <receive_window_buffer> (default 24576, larger may be faster, max 1MB)
+-K <keepalive>  (0 is never, default 0)
+-I <idle_timeout>  (0 is never, default 0)
+-c <cipher list> Specify preferred ciphers ('-c help' to list options)
+-m <MAC list> Specify preferred MACs for packet verification (or '-m help')
+-b    [bind_address][:bind_port]
+-V    Version
+/ $ ssh cloud_user@34.229.74.1
+
+Host '34.229.74.1' is not in the trusted hosts file.
+(ssh-ed25519 fingerprint sha1!! d4:5b:d2:bf:8e:e6:05:8a:cc:a0:c5:3e:84:4e:80:54:76:65:81:ae)
+Do you want to continue connecting? (y/n) y
+cloud_user@34.229.74.1's password:
+Welcome to Ubuntu 18.04.3 LTS (GNU/Linux 4.15.0-1052-aws x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+ System information disabled due to load higher than 1.0
+
+ * Ubuntu Pro delivers the most comprehensive open source security and
+   compliance features.
+
+   https://ubuntu.com/aws/pro
+
+  Get cloud support with Ubuntu Advantage Cloud Guest:
+    http://www.ubuntu.com/business/services/cloud
+
+286 packages can be updated.
+222 updates are security updates.
+
+
+cloud_user@ip-10-0-1-102:~$ echo $HOSTNAME
+ip-10-0-1-102
+cloud_user@ip-10-0-1-102:~$ sudo mkdir -p /etc/docker/certs.d/ip-10-0-1-101:443
+[sudo] password for cloud_user:
+cloud_user@ip-10-0-1-102:~$ sudo scp cloud_user@ip-10-0-1-101:/home/cloud_user/registry/certs/domain.crt /etc/docker/certs.d/ip-10-0-1-101:443
+The authenticity of host 'ip-10-0-1-101 (10.0.1.101)' can't be established.
+ECDSA key fingerprint is SHA256:zlApdwsnt4gMlglATt/hYxKJj97Wg4IwRTSqg0tMEpM.
+Are you sure you want to continue connecting (yes/no)? y
+Please type 'yes' or 'no': yes
+Warning: Permanently added 'ip-10-0-1-101,10.0.1.101' (ECDSA) to the list of known hosts.
+Password:
+domain.crt                                                                                               100% 2004     2.3MB/s   00:00
+cloud_user@ip-10-0-1-102:~$ docker login ip-10-0-1-101:443
+Username: docker
+Password:
+WARNING! Your password will be stored unencrypted in /home/cloud_user/.docker/config.json.
+Configure a credential helper to remove this warning. See
+https://docs.docker.com/engine/reference/commandline/login/#credentials-store
+
+Login Succeeded
+cloud_user@ip-10-0-1-102:~$ docker pull ubuntu
+Using default tag: latest
+latest: Pulling from library/ubuntu
+445a6a12be2b: Pull complete
+Digest: sha256:aabed3296a3d45cede1dc866a24476c4d7e093aa806263c27ddaadbdce3c1054
+Status: Downloaded newer image for ubuntu:latest
+cloud_user@ip-10-0-1-102:~$ docker tag ubuntu ip-10-0-1-101:443/test-image:1
+cloud_user@ip-10-0-1-102:~$ docker push ip-10-0-1-101:443/test-image:1
+The push refers to repository [ip-10-0-1-101:443/test-image]
+dc0585a4b8b7: Pushed
+1: digest: sha256:1f77fcf82cc387f6e40e7ca28ba98f5c7241d4211481d9e5532e8ea54e0d9ad5 size: 529
+cloud_user@ip-10-0-1-102:~$ docker image rm ip-10-0-1-101:443/test-image:1
+Untagged: ip-10-0-1-101:443/test-image:1
+Untagged: ip-10-0-1-101:443/test-image@sha256:1f77fcf82cc387f6e40e7ca28ba98f5c7241d4211481d9e5532e8ea54e0d9ad5
+cloud_user@ip-10-0-1-102:~$ docker image rm ubuntu:latest
+Untagged: ubuntu:latest
+Untagged: ubuntu@sha256:aabed3296a3d45cede1dc866a24476c4d7e093aa806263c27ddaadbdce3c1054
+Deleted: sha256:c6b84b685f35f1a5d63661f5d4aa662ad9b7ee4f4b8c394c022f25023c907b65
+Deleted: sha256:dc0585a4b8b71f7f4eb8f2e028067f88aec780d9ab40c948a8d431c1aeadeeb5
+cloud_user@ip-10-0-1-102:~$ docker pull ip-10-0-1-101:443/test-image:1
+1: Pulling from test-image
+44ba2882f8eb: Pull complete
+Digest: sha256:1f77fcf82cc387f6e40e7ca28ba98f5c7241d4211481d9e5532e8ea54e0d9ad5
+Status: Downloaded newer image for ip-10-0-1-101:443/test-image:1
+cloud_user@ip-10-0-1-102:~$

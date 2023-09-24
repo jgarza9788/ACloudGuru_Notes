@@ -1,0 +1,133 @@
+Welcome to A Cloud Guru's SSH Instant Terminal
+
+You can use this terminal to ssh to other systems.
+- Just run 'ssh USERNAME@HOSTNAME'
+
+You can add a pem key too.
+- Just run 'add_key' and follow the instructions.
+
+
+
+Advanced SSH options:
+
+Dropbear SSH client v2020.81 https://matt.ucc.asn.au/dropbear/dropbear.html
+Usage: ssh [options] [user@]host[/port] [command]
+-p <remoteport>
+-l <username>
+-t    Allocate a pty
+-T    Don't allocate a pty
+-N    Don't run a remote command
+-f    Run in background after auth
+-y    Always accept remote host key if unknown
+-y -y Don't perform any remote host key checking (caution)
+-s    Request a subsystem (use by external sftp)
+-o option     Set option in OpenSSH-like format ('-o help' to list options)
+-i <identityfile>   (multiple allowed, default .ssh/id_dropbear)
+-A    Enable agent auth forwarding
+-W <receive_window_buffer> (default 24576, larger may be faster, max 1MB)
+-K <keepalive>  (0 is never, default 0)
+-I <idle_timeout>  (0 is never, default 0)
+-c <cipher list> Specify preferred ciphers ('-c help' to list options)
+-m <MAC list> Specify preferred MACs for packet verification (or '-m help')
+-b    [bind_address][:bind_port]
+-V    Version
+/ $ ssh cloud_user@35.175.171.102
+
+Host '35.175.171.102' is not in the trusted hosts file.
+(ssh-ed25519 fingerprint sha1!! a9:d4:3f:ea:78:d1:43:82:e8:f5:52:24:76:a1:00:00:2e:bc:81:8d)
+Do you want to continue connecting? (y/n) y
+cloud_user@35.175.171.102's password:
+Welcome to Ubuntu 18.04.3 LTS (GNU/Linux 4.15.0-1052-aws x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+  System information as of Sun Sep 24 22:58:51 UTC 2023
+
+  System load:  1.05               Processes:              109
+  Usage of /:   12.8% of 19.32GB   Users logged in:        0
+  Memory usage: 7%                 IP address for eth0:    10.0.1.101
+  Swap usage:   0%                 IP address for docker0: 172.17.0.1
+
+ * Ubuntu Pro delivers the most comprehensive open source security and
+   compliance features.
+
+   https://ubuntu.com/aws/pro
+
+  Get cloud support with Ubuntu Advantage Cloud Guest:
+    http://www.ubuntu.com/business/services/cloud
+
+286 packages can be updated.
+222 updates are security updates.
+
+
+cloud_user@ip-10-0-1-101:~$ mkdir -p ~/registry/auth
+cloud_user@ip-10-0-1-101:~$ docker run --entrypoint htpasswd \
+>  registry:2.7.0 -Bbn docker d0ck3rrU73z > ~/registry/auth/htpasswd
+Unable to find image 'registry:2.7.0' locally
+2.7.0: Pulling from library/registry
+cd784148e348: Pulling fs layer
+0ecb9b11388e: Pulling fs layer
+918b3ddb9613: Pulling fs layer
+5aa847785533: Pulling fs layer
+adee6f546269: Pulling fs layer
+5aa847785533: Waiting
+adee6f546269: Waiting
+cd784148e348: Verifying Checksum
+cd784148e348: Download complete
+0ecb9b11388e: Verifying Checksum
+0ecb9b11388e: Download complete
+5aa847785533: Verifying Checksum
+5aa847785533: Download complete
+adee6f546269: Verifying Checksum
+adee6f546269: Download complete
+918b3ddb9613: Verifying Checksum
+918b3ddb9613: Download complete
+cd784148e348: Pull complete
+0ecb9b11388e: Pull complete
+918b3ddb9613: Pull complete
+5aa847785533: Pull complete
+adee6f546269: Pull complete
+Digest: sha256:1cd9409a311350c3072fe510b52046f104416376c126a479cef9a4dfe692cf57
+Status: Downloaded newer image for registry:2.7.0
+cloud_user@ip-10-0-1-101:~$ mkdir -p ~/registry/certs
+cloud_user@ip-10-0-1-101:~$ openssl req \
+> -newkey rsa:4096 -nodes -sha256 -keyout ~/registry/certs/domain.key \
+> -x509 -days 365 -out ~/registry/certs/domain.crt
+Can't load /home/cloud_user/.rnd into RNG
+140296322027968:error:2406F079:random number generator:RAND_load_file:Cannot open file:../crypto/rand/randfile.c:88:Filename=/home/cloud_user/.rnd
+Generating a RSA private key
+.........................................................................................++++
+...................................................................................++++
+writing new private key to '/home/cloud_user/registry/certs/domain.key'
+-----
+You are about to be asked to enter information that will be incorporated
+into your certificate request.
+What you are about to enter is what is called a Distinguished Name or a DN.
+There are quite a few fields but you can leave some blank
+For some fields there will be a default value,
+If you enter '.', the field will be left blank.
+-----
+Country Name (2 letter code) [AU]:
+State or Province Name (full name) [Some-State]:
+Locality Name (eg, city) []:
+Organization Name (eg, company) [Internet Widgits Pty Ltd]:
+Organizational Unit Name (eg, section) []:
+Common Name (e.g. server FQDN or YOUR name) []:ip-10-0-1-101
+Email Address []:
+cloud_user@ip-10-0-1-101:~$ docker run -d -p 443:443 --restart=always --name registry \
+> -v /home/cloud_user/registry/certs:/certs \
+> -v /home/cloud_user/registry/auth:/auth \
+> -e REGISTRY_HTTP_ADDR=0.0.0.0:443 \
+> -e REGISTRY_HTTP_TLS_CERTIFICATE=/certs/domain.crt \
+> -e REGISTRY_HTTP_TLS_KEY=/certs/domain.key \
+> -e REGISTRY_AUTH=htpasswd \
+> -e "REGISTRY_AUTH_HTPASSWD_REALM=Registry Realm" \
+> -e REGISTRY_AUTH_HTPASSWD_PATH=/auth/htpasswd \
+> registry:2.7.0
+82a206202abb42d23cba74563772635311f153f8cbcdcaae4f78f8b97abb4185
+cloud_user@ip-10-0-1-101:~$ curl -k https://localhost:443
+cloud_user@ip-10-0-1-101:~$ echo $HOSTNAME
+ip-10-0-1-101
+cloud_user@ip-10-0-1-101:~$

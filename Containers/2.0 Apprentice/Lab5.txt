@@ -1,0 +1,258 @@
+Welcome to A Cloud Guru's SSH Instant Terminal
+
+You can use this terminal to ssh to other systems.
+- Just run 'ssh USERNAME@HOSTNAME'
+
+You can add a pem key too.
+- Just run 'add_key' and follow the instructions.
+
+
+
+Advanced SSH options:
+
+Dropbear SSH client v2020.81 https://matt.ucc.asn.au/dropbear/dropbear.html
+Usage: ssh [options] [user@]host[/port] [command]
+-p <remoteport>
+-l <username>
+-t    Allocate a pty
+-T    Don't allocate a pty
+-N    Don't run a remote command
+-f    Run in background after auth
+-y    Always accept remote host key if unknown
+-y -y Don't perform any remote host key checking (caution)
+-s    Request a subsystem (use by external sftp)
+-o option     Set option in OpenSSH-like format ('-o help' to list options)
+-i <identityfile>   (multiple allowed, default .ssh/id_dropbear)
+-A    Enable agent auth forwarding
+-W <receive_window_buffer> (default 24576, larger may be faster, max 1MB)
+-K <keepalive>  (0 is never, default 0)
+-I <idle_timeout>  (0 is never, default 0)
+-c <cipher list> Specify preferred ciphers ('-c help' to list options)
+-m <MAC list> Specify preferred MACs for packet verification (or '-m help')
+-b    [bind_address][:bind_port]
+-V    Version
+/ $ ssh cloud_user@54.83.231.10
+
+Host '54.83.231.10' is not in the trusted hosts file.
+(ssh-ed25519 fingerprint sha1!! 6a:11:28:53:f1:b2:5c:ec:db:2e:f1:9a:04:aa:14:39:b3:79:23:91)
+Do you want to continue connecting? (y/n) y
+cloud_user@54.83.231.10's password:
+Welcome to Ubuntu 18.04.3 LTS (GNU/Linux 4.15.0-1052-aws x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+  System information as of Sun Sep 24 22:42:49 UTC 2023
+
+  System load:  0.0                Processes:              95
+  Usage of /:   13.1% of 19.32GB   Users logged in:        0
+  Memory usage: 6%                 IP address for ens5:    10.0.1.101
+  Swap usage:   0%                 IP address for docker0: 172.17.0.1
+
+ * Ubuntu Pro delivers the most comprehensive open source security and
+   compliance features.
+
+   https://ubuntu.com/aws/pro
+
+  Get cloud support with Ubuntu Advantage Cloud Guest:
+    http://www.ubuntu.com/business/services/cloud
+
+279 packages can be updated.
+214 updates are security updates.
+
+
+cloud_user@ip-10-0-1-101:~$ cd ~/fruit-list
+cloud_user@ip-10-0-1-101:~/fruit-list$ vi Dockerfile`
+> ^C
+cloud_user@ip-10-0-1-101:~/fruit-list$ vi Dockerfile
+cloud_user@ip-10-0-1-101:~/fruit-list$ cat Dockerfile
+M nginx:1.15.8
+
+ADD static/fruit.json /usr/share/nginx/html/fruit.json
+ADD nginx.conf /etc/nginx/nginx.conf
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]
+
+cloud_user@ip-10-0-1-101:~/fruit-list$ vi DockerFile
+cloud_user@ip-10-0-1-101:~/fruit-list$ cat Dockerfile
+M nginx:1.15.8
+
+ADD static/fruit.json /usr/share/nginx/html/fruit.json
+ADD nginx.conf /etc/nginx/nginx.conf
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]
+
+cloud_user@ip-10-0-1-101:~/fruit-list$ vi DockerFile
+cloud_user@ip-10-0-1-101:~/fruit-list$ cat Dockerfile
+M nginx:1.15.8
+
+ADD static/fruit.json /usr/share/nginx/html/fruit.json
+ADD nginx.conf /etc/nginx/nginx.conf
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]
+
+cloud_user@ip-10-0-1-101:~/fruit-list$ docker build -t fruit-list:1.0.0 .
+Sending build context to Docker daemon  6.656kB
+Error response from daemon: Dockerfile parse error line 1: unknown instruction: M
+cloud_user@ip-10-0-1-101:~/fruit-list$ del Dockerfile
+
+Command 'del' not found, did you mean:
+
+  command 'den' from snap den (1.2.0-0)
+  command 'qdel' from deb gridengine-client
+  command 'qdel' from deb slurm-wlm-torque
+  command 'wdel' from deb wput
+  command 'deal' from deb deal
+  command 'dll' from deb brickos
+  command 'delv' from deb dnsutils
+  command 'tel' from deb orville-write
+  command 'bel' from deb belier
+  command 'hdel' from deb hfsutils
+  command 'dep' from deb go-dep
+  command 'mdel' from deb mtools
+  command 'el' from deb oneliner-el
+  command 'delp' from deb fp-utils-3.0.4
+  command 'dex' from deb dex
+
+See 'snap info <snapname>' for additional versions.
+
+cloud_user@ip-10-0-1-101:~/fruit-list$ rm Dockerfile
+cloud_user@ip-10-0-1-101:~/fruit-list$ ls
+DockerFile  nginx.conf  static
+cloud_user@ip-10-0-1-101:~/fruit-list$ rm Dockerfile
+rm: cannot remove 'Dockerfile': No such file or directory
+cloud_user@ip-10-0-1-101:~/fruit-list$ rm DockerFile
+cloud_user@ip-10-0-1-101:~/fruit-list$ vi Dockerfile
+cloud_user@ip-10-0-1-101:~/fruit-list$ cat Dockerfile
+FROM nginx:1.15.8
+
+ADD static/fruit.json /usr/share/nginx/html/fruit.json
+ADD nginx.conf /etc/nginx/nginx.conf
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]
+cloud_user@ip-10-0-1-101:~/fruit-list$ docker build -t fruit-list:1.0.0 .
+Sending build context to Docker daemon  5.632kB
+Step 1/5 : FROM nginx:1.15.8
+1.15.8: Pulling from library/nginx
+6ae821421a7d: Pull complete
+da4474e5966c: Pull complete
+eb2aec2b9c9f: Pull complete
+Digest: sha256:dd2d0ac3fff2f007d99e033b64854be0941e19a2ad51f174d9240dda20d9f534
+Status: Downloaded newer image for nginx:1.15.8
+ ---> f09fe80eb0e7
+Step 2/5 : ADD static/fruit.json /usr/share/nginx/html/fruit.json
+ ---> d266ccb96918
+Step 3/5 : ADD nginx.conf /etc/nginx/nginx.conf
+ ---> 0e8b6f913fbf
+Step 4/5 : EXPOSE 80
+ ---> Running in bca0a8257d3c
+Removing intermediate container bca0a8257d3c
+ ---> 0b0aac3c1e36
+Step 5/5 : CMD ["nginx", "-g", "daemon off;"]
+ ---> Running in e50acebd3a18
+Removing intermediate container e50acebd3a18
+ ---> b9b4cc416137
+Successfully built b9b4cc416137
+Successfully tagged fruit-list:1.0.0
+cloud_user@ip-10-0-1-101:~/fruit-list$ docker run --name fruit-list -d -p 8080:80 fruit-list:1.0.0
+6a96d2ec00976e2aea7185f27a104a9f3243e4638c5141d0f90367775b3c738a
+cloud_user@ip-10-0-1-101:~/fruit-list$ docker container ls
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                  NAMES
+6a96d2ec0097        fruit-list:1.0.0    "nginx -g 'daemon of…"   12 seconds ago      Up 11 seconds       0.0.0.0:8080->80/tcp   fruit-list
+cloud_user@ip-10-0-1-101:~/fruit-list$ curl localhost:8080
+{
+  "description": "A list of fruits.",
+  "fruits": [
+    "apple",
+    "apricot",
+    "avocado",
+    "banana",
+    "bell pepper",
+    "bilberry",
+    "blackberry",
+    "blackcurrant",
+    "blood orange",
+    "blueberry",
+    "boysenberry",
+    "breadfruit",
+    "canary melon",
+    "cantaloupe",
+    "cherimoya",
+    "cherry",
+    "chili pepper",
+    "clementine",
+    "cloudberry",
+    "coconut",
+    "cranberry",
+    "cucumber",
+    "currant",
+    "damson",
+    "date",
+    "dragonfruit",
+    "durian",
+    "eggplant",
+    "elderberry",
+    "feijoa",
+    "fig",
+    "goji berry",
+    "gooseberry",
+    "grape",
+    "grapefruit",
+    "guava",
+    "honeydew",
+    "huckleberry",
+    "jackfruit",
+    "jambul",
+    "jujube",
+    "kiwi fruit",
+    "kumquat",
+    "lemon",
+    "lime",
+    "loquat",
+    "lychee",
+    "mandarine",
+    "mango",
+    "mulberry",
+    "nectarine",
+    "nut",
+    "olive",
+    "orange",
+    "pamelo",
+    "papaya",
+    "passionfruit",
+    "peach",
+    "pear",
+    "persimmon",
+    "physalis",
+    "pineapple",
+    "plum",
+    "pomegranate",
+    "pomelo",
+    "purple mangosteen",
+    "quince",
+    "raisin",
+    "rambutan",
+    "raspberry",
+    "redcurrant",
+    "rock melon",
+    "salal berry",
+    "satsuma",
+    "star fruit",
+    "strawberry",
+    "tamarillo",
+    "tangerine",
+    "tomato",
+    "ugli fruit",
+    "watermelon"
+  ]
+}
+cloud_user@ip-10-0-1-101:~/fruit-list$
