@@ -1,0 +1,150 @@
+Welcome to A Cloud Guru's SSH Instant Terminal
+
+You can use this terminal to ssh to other systems.
+- Just run 'ssh USERNAME@HOSTNAME'
+
+You can add a pem key too.
+- Just run 'add_key' and follow the instructions.
+
+
+
+Advanced SSH options:
+
+Dropbear SSH client v2020.81 https://matt.ucc.asn.au/dropbear/dropbear.html
+Usage: ssh [options] [user@]host[/port] [command]
+-p <remoteport>
+-l <username>
+-t    Allocate a pty
+-T    Don't allocate a pty
+-N    Don't run a remote command
+-f    Run in background after auth
+-y    Always accept remote host key if unknown
+-y -y Don't perform any remote host key checking (caution)
+-s    Request a subsystem (use by external sftp)
+-o option     Set option in OpenSSH-like format ('-o help' to list options)
+-i <identityfile>   (multiple allowed, default .ssh/id_dropbear)
+-A    Enable agent auth forwarding
+-W <receive_window_buffer> (default 24576, larger may be faster, max 1MB)
+-K <keepalive>  (0 is never, default 0)
+-I <idle_timeout>  (0 is never, default 0)
+-c <cipher list> Specify preferred ciphers ('-c help' to list options)
+-m <MAC list> Specify preferred MACs for packet verification (or '-m help')
+-b    [bind_address][:bind_port]
+-V    Version
+/ $ ssh cloud_user@18.212.113.159
+
+Host '18.212.113.159' is not in the trusted hosts file.
+(ssh-ed25519 fingerprint sha1!! 94:71:e2:4f:44:f6:09:06:67:0c:6a:63:c5:4f:87:7e:19:54:59:46)
+Do you want to continue connecting? (y/n)
+ssh: Connection to cloud_user@18.212.113.159:22 exited: Didn't validate host key
+/ $ y
+/bin/bash: y: not found
+/ $ ssh cloud_user@18.212.113.159
+
+Host '18.212.113.159' is not in the trusted hosts file.
+(ssh-ed25519 fingerprint sha1!! 94:71:e2:4f:44:f6:09:06:67:0c:6a:63:c5:4f:87:7e:19:54:59:46)
+Do you want to continue connecting? (y/n) y
+cloud_user@18.212.113.159's password:
+Welcome to Ubuntu 18.04.3 LTS (GNU/Linux 4.15.0-1052-aws x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+  System information as of Sun Oct  8 17:28:20 UTC 2023
+
+  System load:  0.0                Users logged in:                0
+  Usage of /:   13.7% of 19.32GB   IP address for ens5:            10.0.1.101
+  Memory usage: 7%                 IP address for docker0:         172.17.0.1
+  Swap usage:   0%                 IP address for docker_gwbridge: 172.18.0.1
+  Processes:    96
+
+ * Ubuntu Pro delivers the most comprehensive open source security and
+   compliance features.
+
+   https://ubuntu.com/aws/pro
+
+  Get cloud support with Ubuntu Advantage Cloud Guest:
+    http://www.ubuntu.com/business/services/cloud
+
+279 packages can be updated.
+214 updates are security updates.
+
+
+cloud_user@ip-10-0-1-101:~$ docker network create --driver overlay prices-overlay-net
+ogew50pudvxzj1sib3ze0qt01
+cloud_user@ip-10-0-1-101:~$ docker service create --name base-price --network prices-overlay-net --replicas 3 linuxacademycontent/prices-base-price:1
+243lkti0qx5fewp34uth5hokw
+overall progress: 3 out of 3 tasks
+1/3: running   [==================================================>]
+2/3: running   [==================================================>]
+3/3: running   [==================================================>]
+verify: Service converged
+cloud_user@ip-10-0-1-101:~$ docker service create --name sales --network prices-overlay-net --replicas 3 linuxacademycontent/prices-sales:1
+cvmzukb1tzgsuwuwhxr6pu9e1
+overall progress: 3 out of 3 tasks
+1/3: running   [==================================================>]
+2/3: running   [==================================================>]
+3/3: running   [==================================================>]
+verify: Service converged
+cloud_user@ip-10-0-1-101:~$ docker service create --name total-price --network prices-overlay-net --replicas 2 -p 8080:80 linuxacademycontent/prices-total-price:1
+u4kfgqo51jsc5q486odi7fy6v
+overall progress: 2 out of 2 tasks
+1/2: running   [==================================================>]
+2/2: running   [==================================================>]
+verify: Service converged
+cloud_user@ip-10-0-1-101:~$ docker service ls
+ID                  NAME                MODE                REPLICAS            IMAGE                                      PORTS
+243lkti0qx5f        base-price          replicated          3/3                 linuxacademycontent/prices-base-price:1
+cvmzukb1tzgs        sales               replicated          3/3                 linuxacademycontent/prices-sales:1
+u4kfgqo51jsc        total-price         replicated          2/2                 linuxacademycontent/prices-total-price:1   *:8080->80/tcp
+cloud_user@ip-10-0-1-101:~$ curl localhost:8080
+{
+    "description": "A list of total prices, including discounts.",
+    "products": [
+        {
+            "name": "apple",
+            "price": "0.98"
+        },
+        {
+            "name": "banana",
+            "price": "1.00"
+        },
+        {
+            "name": "blueberry",
+            "price": "3.99"
+        },
+        {
+            "name": "coconut",
+            "price": "4.99"
+        },
+        {
+            "name": "cranberry",
+            "price": "2.09"
+        },
+        {
+            "name": "cucumber",
+            "price": "0.50"
+        },
+        {
+            "name": "currant",
+            "price": "2.00"
+        },
+        {
+            "name": "olive",
+            "price": "2.50"
+        },
+        {
+            "name": "orange",
+            "price": "1.31"
+        },
+        {
+            "name": "pamelo",
+            "price": "3.00"
+        },
+        {
+            "name": "papaya",
+            "price": "4.75"
+        }
+    ]
+}cloud_user@ip-10-0-1-101:~$

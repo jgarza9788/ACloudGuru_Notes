@@ -1,0 +1,75 @@
+Welcome to A Cloud Guru's SSH Instant Terminal
+
+You can use this terminal to ssh to other systems.
+- Just run 'ssh USERNAME@HOSTNAME'
+
+You can add a pem key too.
+- Just run 'add_key' and follow the instructions.
+
+
+
+Advanced SSH options:
+
+Dropbear SSH client v2020.81 https://matt.ucc.asn.au/dropbear/dropbear.html
+Usage: ssh [options] [user@]host[/port] [command]
+-p <remoteport>
+-l <username>
+-t    Allocate a pty
+-T    Don't allocate a pty
+-N    Don't run a remote command
+-f    Run in background after auth
+-y    Always accept remote host key if unknown
+-y -y Don't perform any remote host key checking (caution)
+-s    Request a subsystem (use by external sftp)
+-o option     Set option in OpenSSH-like format ('-o help' to list options)
+-i <identityfile>   (multiple allowed, default .ssh/id_dropbear)
+-A    Enable agent auth forwarding
+-W <receive_window_buffer> (default 24576, larger may be faster, max 1MB)
+-K <keepalive>  (0 is never, default 0)
+-I <idle_timeout>  (0 is never, default 0)
+-c <cipher list> Specify preferred ciphers ('-c help' to list options)
+-m <MAC list> Specify preferred MACs for packet verification (or '-m help')
+-b    [bind_address][:bind_port]
+-V    Version
+/ $ ssh cloud_user@52.23.208.113
+
+Host '52.23.208.113' is not in the trusted hosts file.
+(ssh-ed25519 fingerprint sha1!! e8:3c:25:44:32:fc:fd:01:8a:08:dc:de:e7:7e:4e:35:b2:80:bb:96)
+Do you want to continue connecting? (y/n) y
+cloud_user@52.23.208.113's password:
+Welcome to Ubuntu 18.04.6 LTS (GNU/Linux 5.4.0-1092-aws x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+ System information disabled due to load higher than 1.0
+
+ * Ubuntu Pro delivers the most comprehensive open source security and
+   compliance features.
+
+   https://ubuntu.com/aws/pro
+
+  Get cloud support with Ubuntu Advantage Cloud Guest:
+    http://www.ubuntu.com/business/services/cloud
+
+88 updates can be applied immediately.
+59 of these updates are standard security updates.
+To see these additional updates run: apt list --upgradable
+
+New release '20.04.6 LTS' available.
+Run 'do-release-upgrade' to upgrade to it.
+
+
+*** System restart required ***
+cloud_user@ip-10-0-1-103:~$ sudo mkdir -p /etc/docker/storage sudo chown cloud_user:cloud_user /etc/docker/storage
+[sudo] password for cloud_user:
+cloud_user@ip-10-0-1-103:~$ cp /home/cloud_user/nginx.conf /etc/docker/storage/
+cp: cannot create regular file '/etc/docker/storage/nginx.conf': Permission denied
+cloud_user@ip-10-0-1-103:~$ ls /home/cloud_user/
+chown  cloud_user:cloud_user  nginx.conf  sudo
+cloud_user@ip-10-0-1-103:~$ sudo chown cloud_user:cloud_user /etc/docker/storage
+cloud_user@ip-10-0-1-103:~$ cp /home/cloud_user/nginx.conf /etc/docker/storage/
+cloud_user@ip-10-0-1-103:~$ ls /etc/docker/storage
+nginx.conf
+cloud_user@ip-10-0-1-103:~$

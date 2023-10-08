@@ -1,0 +1,156 @@
+Welcome to A Cloud Guru's SSH Instant Terminal
+
+You can use this terminal to ssh to other systems.
+- Just run 'ssh USERNAME@HOSTNAME'
+
+You can add a pem key too.
+- Just run 'add_key' and follow the instructions.
+
+
+
+Advanced SSH options:
+
+Dropbear SSH client v2020.81 https://matt.ucc.asn.au/dropbear/dropbear.html
+Usage: ssh [options] [user@]host[/port] [command]
+-p <remoteport>
+-l <username>
+-t    Allocate a pty
+-T    Don't allocate a pty
+-N    Don't run a remote command
+-f    Run in background after auth
+-y    Always accept remote host key if unknown
+-y -y Don't perform any remote host key checking (caution)
+-s    Request a subsystem (use by external sftp)
+-o option     Set option in OpenSSH-like format ('-o help' to list options)
+-i <identityfile>   (multiple allowed, default .ssh/id_dropbear)
+-A    Enable agent auth forwarding
+-W <receive_window_buffer> (default 24576, larger may be faster, max 1MB)
+-K <keepalive>  (0 is never, default 0)
+-I <idle_timeout>  (0 is never, default 0)
+-c <cipher list> Specify preferred ciphers ('-c help' to list options)
+-m <MAC list> Specify preferred MACs for packet verification (or '-m help')
+-b    [bind_address][:bind_port]
+-V    Version
+/ $ ssh cloud_user@18.212.118.169
+
+Host '18.212.118.169' is not in the trusted hosts file.
+(ssh-ed25519 fingerprint sha1!! 6c:89:0e:5d:5e:95:16:82:52:d8:e8:29:be:45:a0:f8:93:0e:45:47)
+Do you want to continue connecting? (y/n) y
+cloud_user@18.212.118.169's password:
+Welcome to Ubuntu 18.04.3 LTS (GNU/Linux 4.15.0-1052-aws x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+  System information as of Sun Oct  8 16:45:36 UTC 2023
+
+  System load:  1.01               Processes:              115
+  Usage of /:   13.3% of 19.32GB   Users logged in:        0
+  Memory usage: 7%                 IP address for ens5:    10.0.1.101
+  Swap usage:   0%                 IP address for docker0: 172.17.0.1
+
+ * Ubuntu Pro delivers the most comprehensive open source security and
+   compliance features.
+
+   https://ubuntu.com/aws/pro
+
+  Get cloud support with Ubuntu Advantage Cloud Guest:
+    http://www.ubuntu.com/business/services/cloud
+
+286 packages can be updated.
+222 updates are security updates.
+
+
+cloud_user@ip-10-0-1-101:~$ docker network create --driver bridge prices-net
+6c9ea98ca92aa7a84c58080b40545fe9f0311952ecd85a28668b32e5d54e4b14
+cloud_user@ip-10-0-1-101:~$ docker run --name base-price -d --network prices-net linuxacademycontent/prices-base-price:1
+Unable to find image 'linuxacademycontent/prices-base-price:1' locally
+1: Pulling from linuxacademycontent/prices-base-price
+6ae821421a7d: Pull complete
+da4474e5966c: Pull complete
+eb2aec2b9c9f: Pull complete
+11fdb6ecf8e5: Pull complete
+376dcd7d98dc: Pull complete
+Digest: sha256:11a73dc54b02fef68f7c2d275bcce78410238464f7d7b8b18442f39ff1ef30c3
+Status: Downloaded newer image for linuxacademycontent/prices-base-price:1
+52e56b243186830876555011d85198a3af7674900d05a6b3db9f08e00c73d65d
+cloud_user@ip-10-0-1-101:~$ docker run --name sales -d --network prices-net linuxacademycontent/prices-sales:1
+Unable to find image 'linuxacademycontent/prices-sales:1' locally
+1: Pulling from linuxacademycontent/prices-sales
+6ae821421a7d: Already exists
+da4474e5966c: Already exists
+eb2aec2b9c9f: Already exists
+286147866c84: Pull complete
+bdef4d996fe7: Pull complete
+Digest: sha256:00d74cf1ba2d6b334a9ca82a2c089942dc12ac7b5bd2bea822a950527c1af8ab
+Status: Downloaded newer image for linuxacademycontent/prices-sales:1
+3fd71ff9531a74fa8dc34d0a3c3bf255a30e0603e755fa2c3f69862a04d45c3c
+cloud_user@ip-10-0-1-101:~$ docker run --name total-price -d --network prices-net -p 8080:80 linuxacademycontent/prices-total-price:1
+Unable to find image 'linuxacademycontent/prices-total-price:1' locally
+1: Pulling from linuxacademycontent/prices-total-price
+e79bb959ec00: Pull complete
+d4b7902036fe: Pull complete
+1b2a72d4e030: Pull complete
+d54db43011fd: Pull complete
+69d473365bb3: Pull complete
+6e2490ee2dc8: Pull complete
+964e7de7abca: Pull complete
+95a255758e4c: Pull complete
+e4d3cfbf38c0: Pull complete
+10f99269d425: Pull complete
+7aaadaa0a859: Pull complete
+fb86fab35b78: Pull complete
+Digest: sha256:1aced9f7b1ec8c28d432dad865de09b42bdfb4dcd98613dbf6ab30dee9d1584b
+Status: Downloaded newer image for linuxacademycontent/prices-total-price:1
+83098e321a8ccbd5bdea4b1eb153a6df3f368b88ad13a12a805ae5cc9fca15c0
+cloud_user@ip-10-0-1-101:~$ curl localhost:8080
+{
+    "description": "A list of total prices, including discounts.",
+    "products": [
+        {
+            "name": "apple",
+            "price": "0.98"
+        },
+        {
+            "name": "banana",
+            "price": "1.00"
+        },
+        {
+            "name": "blueberry",
+            "price": "3.99"
+        },
+        {
+            "name": "coconut",
+            "price": "4.99"
+        },
+        {
+            "name": "cranberry",
+            "price": "2.09"
+        },
+        {
+            "name": "cucumber",
+            "price": "0.50"
+        },
+        {
+            "name": "currant",
+            "price": "2.00"
+        },
+        {
+            "name": "olive",
+            "price": "2.50"
+        },
+        {
+            "name": "orange",
+            "price": "1.31"
+        },
+        {
+            "name": "pamelo",
+            "price": "3.00"
+        },
+        {
+            "name": "papaya",
+            "price": "4.75"
+        }
+    ]
+}cloud_user@ip-10-0-1-101:~$

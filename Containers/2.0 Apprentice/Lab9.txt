@@ -1,0 +1,150 @@
+Welcome to A Cloud Guru's SSH Instant Terminal
+
+You can use this terminal to ssh to other systems.
+- Just run 'ssh USERNAME@HOSTNAME'
+
+You can add a pem key too.
+- Just run 'add_key' and follow the instructions.
+
+
+
+Advanced SSH options:
+
+Dropbear SSH client v2020.81 https://matt.ucc.asn.au/dropbear/dropbear.html
+Usage: ssh [options] [user@]host[/port] [command]
+-p <remoteport>
+-l <username>
+-t    Allocate a pty
+-T    Don't allocate a pty
+-N    Don't run a remote command
+-f    Run in background after auth
+-y    Always accept remote host key if unknown
+-y -y Don't perform any remote host key checking (caution)
+-s    Request a subsystem (use by external sftp)
+-o option     Set option in OpenSSH-like format ('-o help' to list options)
+-i <identityfile>   (multiple allowed, default .ssh/id_dropbear)
+-A    Enable agent auth forwarding
+-W <receive_window_buffer> (default 24576, larger may be faster, max 1MB)
+-K <keepalive>  (0 is never, default 0)
+-I <idle_timeout>  (0 is never, default 0)
+-c <cipher list> Specify preferred ciphers ('-c help' to list options)
+-m <MAC list> Specify preferred MACs for packet verification (or '-m help')
+-b    [bind_address][:bind_port]
+-V    Version
+/ $ ssh cloud_user@44.198.55.20
+
+Host '44.198.55.20' is not in the trusted hosts file.
+(ssh-ed25519 fingerprint sha1!! 17:3a:f9:a8:f2:0f:24:73:84:e3:9f:7f:dd:11:28:f4:23:35:a1:9a)
+Do you want to continue connecting? (y/n) y
+cloud_user@44.198.55.20's password:
+Welcome to Ubuntu 18.04.3 LTS (GNU/Linux 4.15.0-1052-aws x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+  System information as of Sun Oct  1 22:30:32 UTC 2023
+
+  System load:  0.0                Processes:              96
+  Usage of /:   13.1% of 19.32GB   Users logged in:        0
+  Memory usage: 6%                 IP address for ens5:    10.0.1.101
+  Swap usage:   0%                 IP address for docker0: 172.17.0.1
+
+ * Ubuntu Pro delivers the most comprehensive open source security and
+   compliance features.
+
+   https://ubuntu.com/aws/pro
+
+  Get cloud support with Ubuntu Advantage Cloud Guest:
+    http://www.ubuntu.com/business/services/cloud
+
+279 packages can be updated.
+214 updates are security updates.
+
+
+cloud_user@ip-10-0-1-101:~$ docker volume create test-data
+test-data
+cloud_user@ip-10-0-1-101:~$ docker run --name counter -d \
+>   --mount type=volume,source=test-data,destination=/var/log/test \
+>   busybox \
+>   sh -c 'i=0; while true; do echo "$i: $(date)" >> /var/log/test/1.log; i=$((i+1)); sleep 1; done'
+Unable to find image 'busybox:latest' locally
+latest: Pulling from library/busybox
+3f4d90098f5b: Pull complete
+Digest: sha256:3fbc632167424a6d997e74f52b878d7cc478225cffac6bc977eedfe51c7f4e79
+Status: Downloaded newer image for busybox:latest
+41c2e3218bd7afae444cb1dc6d34dc73a17ac68eae0130b34539e4094c80896d
+cloud_user@ip-10-0-1-101:~$ docker exec counter cat /var/log/test/1.log
+0: Sun Oct  1 22:30:59 UTC 2023
+1: Sun Oct  1 22:31:00 UTC 2023
+2: Sun Oct  1 22:31:01 UTC 2023
+3: Sun Oct  1 22:31:02 UTC 2023
+4: Sun Oct  1 22:31:03 UTC 2023
+5: Sun Oct  1 22:31:04 UTC 2023
+6: Sun Oct  1 22:31:05 UTC 2023
+7: Sun Oct  1 22:31:06 UTC 2023
+8: Sun Oct  1 22:31:07 UTC 2023
+cloud_user@ip-10-0-1-101:~$ docker exec counter cat /var/log/test/1.log
+0: Sun Oct  1 22:30:59 UTC 2023
+1: Sun Oct  1 22:31:00 UTC 2023
+2: Sun Oct  1 22:31:01 UTC 2023
+3: Sun Oct  1 22:31:02 UTC 2023
+4: Sun Oct  1 22:31:03 UTC 2023
+5: Sun Oct  1 22:31:04 UTC 2023
+6: Sun Oct  1 22:31:05 UTC 2023
+7: Sun Oct  1 22:31:06 UTC 2023
+8: Sun Oct  1 22:31:07 UTC 2023
+9: Sun Oct  1 22:31:08 UTC 2023
+10: Sun Oct  1 22:31:09 UTC 2023
+11: Sun Oct  1 22:31:10 UTC 2023
+12: Sun Oct  1 22:31:11 UTC 2023
+cloud_user@ip-10-0-1-101:~$ docker run --name fluentd -d \
+>   --mount type=volume,source=test-data,destination=/var/log/input \
+>   --mount type=bind,source=/etc/fluentd/fluent.conf,destination=/fluentd/etc/fluent.conf \
+>   --mount type=bind,source=/etc/fluentd/output,destination=/var/log/output \
+>   --env FLUENTD_ARGS="-c /fluentd/etc/fluent.conf" \
+>   k8s.gcr.io/fluentd-gcp:1.30
+Unable to find image 'k8s.gcr.io/fluentd-gcp:1.30' locally
+1.30: Pulling from fluentd-gcp
+169bb74c2cc6: Pull complete
+a3ed95caeb02: Pull complete
+c26ade95f65d: Pull complete
+fcd86db91bc2: Pull complete
+246c5ca21b8c: Pull complete
+Digest: sha256:504f67ce50c926f15c0d4a7a68ac0266e998cbe194b81e82a3637fee439fb168
+Status: Downloaded newer image for k8s.gcr.io/fluentd-gcp:1.30
+a346d67cfe0878728a69d7199a142cbb3adf5671078d4fc155f2f28b5686f98c
+cloud_user@ip-10-0-1-101:~$ ls /etc/fluentd/output
+count.20231001223153.b606af397aee885c9  count.20231001223154.b606af398a354f5b2  count.20231001223155.b606af39997c81d5f
+cloud_user@ip-10-0-1-101:~$ cat ./etc/fluentd/output/count.20231001223153.b606af397aee885c9
+cat: ./etc/fluentd/output/count.20231001223153.b606af397aee885c9: No such file or directory
+cloud_user@ip-10-0-1-101:~$ cd /etc/fluentd/output/
+cloud_user@ip-10-0-1-101:/etc/fluentd/output$ ls
+count.20231001223153_0.log  count.20231001223216_0.log  count.20231001223239_0.log  count.20231001223302_0.log  count.20231001223325_0.log
+count.20231001223154_0.log  count.20231001223217_0.log  count.20231001223240_0.log  count.20231001223303_0.log  count.20231001223326_0.log
+count.20231001223155_0.log  count.20231001223218_0.log  count.20231001223241_0.log  count.20231001223304_0.log  count.20231001223327_0.log
+count.20231001223156_0.log  count.20231001223219_0.log  count.20231001223242_0.log  count.20231001223305_0.log  count.20231001223328_0.log
+count.20231001223157_0.log  count.20231001223220_0.log  count.20231001223243_0.log  count.20231001223306_0.log  count.20231001223329_0.log
+count.20231001223158_0.log  count.20231001223221_0.log  count.20231001223244_0.log  count.20231001223307_0.log  count.20231001223330_0.log
+count.20231001223159_0.log  count.20231001223222_0.log  count.20231001223245_0.log  count.20231001223308_0.log  count.20231001223331_0.log
+count.20231001223200_0.log  count.20231001223223_0.log  count.20231001223246_0.log  count.20231001223309_0.log  count.20231001223332_0.log
+count.20231001223201_0.log  count.20231001223224_0.log  count.20231001223247_0.log  count.20231001223310_0.log  count.20231001223333_0.log
+count.20231001223202_0.log  count.20231001223225_0.log  count.20231001223248_0.log  count.20231001223311_0.log  count.20231001223334_0.log
+count.20231001223203_0.log  count.20231001223226_0.log  count.20231001223249_0.log  count.20231001223312_0.log  count.20231001223335_0.log
+count.20231001223204_0.log  count.20231001223227_0.log  count.20231001223250_0.log  count.20231001223313_0.log  count.20231001223336_0.log
+count.20231001223205_0.log  count.20231001223228_0.log  count.20231001223251_0.log  count.20231001223314_0.log  count.20231001223337_0.log
+count.20231001223206_0.log  count.20231001223229_0.log  count.20231001223252_0.log  count.20231001223315_0.log  count.20231001223338_0.log
+count.20231001223207_0.log  count.20231001223230_0.log  count.20231001223253_0.log  count.20231001223316_0.log  count.20231001223339_0.log
+count.20231001223208_0.log  count.20231001223231_0.log  count.20231001223254_0.log  count.20231001223317_0.log  count.20231001223340_0.log
+count.20231001223209_0.log  count.20231001223232_0.log  count.20231001223255_0.log  count.20231001223318_0.log  count.20231001223341_0.log
+count.20231001223210_0.log  count.20231001223233_0.log  count.20231001223256_0.log  count.20231001223319_0.log  count.20231001223342.q606af3ffc9034bbe
+count.20231001223211_0.log  count.20231001223234_0.log  count.20231001223257_0.log  count.20231001223320_0.log  count.20231001223343.q606af400bdd2b8c6
+count.20231001223212_0.log  count.20231001223235_0.log  count.20231001223258_0.log  count.20231001223321_0.log  count.20231001223344.q606af401b24a3812
+count.20231001223213_0.log  count.20231001223236_0.log  count.20231001223259_0.log  count.20231001223322_0.log  count.20231001223345.q606af402a6c5fe67
+count.20231001223214_0.log  count.20231001223237_0.log  count.20231001223300_0.log  count.20231001223323_0.log  count.20231001223346.q606af4039b3b03c2
+count.20231001223215_0.log  count.20231001223238_0.log  count.20231001223301_0.log  count.20231001223324_0.log  count.20231001223347.b606af4048fb01964
+cloud_user@ip-10-0-1-101:/etc/fluentd/output$ cat count.20231001223342.q606af3ffc9034bbe
+cat: count.20231001223342.q606af3ffc9034bbe: No such file or directory
+cloud_user@ip-10-0-1-101:/etc/fluentd/output$ cat count.20231001223153_0.log
+2023-10-01T22:31:53+00:00       count.format1   {"message":"54: Sun Oct  1 22:31:53 UTC 2023"}
+cloud_user@ip-10-0-1-101:/etc/fluentd/output$

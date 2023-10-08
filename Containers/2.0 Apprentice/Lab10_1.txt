@@ -1,0 +1,104 @@
+Welcome to A Cloud Guru's SSH Instant Terminal
+
+You can use this terminal to ssh to other systems.
+- Just run 'ssh USERNAME@HOSTNAME'
+
+You can add a pem key too.
+- Just run 'add_key' and follow the instructions.
+
+
+
+Advanced SSH options:
+
+Dropbear SSH client v2020.81 https://matt.ucc.asn.au/dropbear/dropbear.html
+Usage: ssh [options] [user@]host[/port] [command]
+-p <remoteport>
+-l <username>
+-t    Allocate a pty
+-T    Don't allocate a pty
+-N    Don't run a remote command
+-f    Run in background after auth
+-y    Always accept remote host key if unknown
+-y -y Don't perform any remote host key checking (caution)
+-s    Request a subsystem (use by external sftp)
+-o option     Set option in OpenSSH-like format ('-o help' to list options)
+-i <identityfile>   (multiple allowed, default .ssh/id_dropbear)
+-A    Enable agent auth forwarding
+-W <receive_window_buffer> (default 24576, larger may be faster, max 1MB)
+-K <keepalive>  (0 is never, default 0)
+-I <idle_timeout>  (0 is never, default 0)
+-c <cipher list> Specify preferred ciphers ('-c help' to list options)
+-m <MAC list> Specify preferred MACs for packet verification (or '-m help')
+-b    [bind_address][:bind_port]
+-V    Version
+/ $ ssh cloud_user@3.82.251.51
+
+Host '3.82.251.51' is not in the trusted hosts file.
+(ssh-ed25519 fingerprint sha1!! d4:66:f1:a9:7a:2b:20:b3:02:01:aa:78:a7:35:a1:ff:a8:4b:6a:36)
+Do you want to continue connecting? (y/n) y
+cloud_user@3.82.251.51's password:
+Welcome to Ubuntu 18.04.3 LTS (GNU/Linux 4.15.0-1052-aws x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+  System information as of Sat Oct  7 19:39:02 UTC 2023
+
+  System load:  1.05               Users logged in:                0
+  Usage of /:   13.4% of 19.32GB   IP address for eth0:            10.0.1.101
+  Memory usage: 8%                 IP address for docker0:         172.17.0.1
+  Swap usage:   0%                 IP address for docker_gwbridge: 172.18.0.1
+  Processes:    109
+
+ * Ubuntu Pro delivers the most comprehensive open source security and
+   compliance features.
+
+   https://ubuntu.com/aws/pro
+
+  Get cloud support with Ubuntu Advantage Cloud Guest:
+    http://www.ubuntu.com/business/services/cloud
+
+250 packages can be updated.
+193 updates are security updates.
+
+
+cloud_user@ip-10-0-1-101:~$ docker plugin install --grant-all-permissions vieux/sshfs
+latest: Pulling from vieux/sshfs
+52d435ada6a4: Download complete
+Digest: sha256:1d3c3e42c12138da5ef7873b97f7f32cf99fb6edde75fa4f0bcf9ed277855811
+Status: Downloaded newer image for vieux/sshfs:latest
+Installed plugin vieux/sshfs
+cloud_user@ip-10-0-1-101:~$ docker service create -d \
+>    --replicas=3 \
+>    --name nginx-web \
+>    -p 8080:9773 \
+>    --mount volume-driver=vieux/sshfs,source=nginx-config-vol,target=/etc/nginx/,volume-opt=sshcmd=cloud_user@10.0.1.103:/etc/docker/storage,volume-opt=password="7#4I9Vx0" nginx:latest
+buk2tdr8ogfy8ksoj9sq84fml
+cloud_user@ip-10-0-1-101:~$ curl localhost:8080
+curl: (7) Failed to connect to localhost port 8080: Connection refused
+cloud_user@ip-10-0-1-101:~$ curl localhost:8080
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+<style>
+html { color-scheme: light dark; }
+body { width: 35em; margin: 0 auto;
+font-family: Tahoma, Verdana, Arial, sans-serif; }
+</style>
+</head>
+<body>
+<h1>Welcome to nginx!</h1>
+<p>If you see this page, the nginx web server is successfully installed and
+working. Further configuration is required.</p>
+
+<p>For online documentation and support please refer to
+<a href="http://nginx.org/">nginx.org</a>.<br/>
+Commercial support is available at
+<a href="http://nginx.com/">nginx.com</a>.</p>
+
+<p><em>Thank you for using nginx.</em></p>
+</body>
+</html>
+cloud_user@ip-10-0-1-101:~$
